@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- PROJECT METADATA -->
+    <parent>
+        <groupId>com.lyndir.lhunath</groupId>
+        <artifactId>lyndir</artifactId>
+        <version>GIT-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.lyndir.lhunath.grantmywishes</groupId>
+    <artifactId>grantmywish.es</artifactId>
+    <version>GIT-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>grantmywish.es</name>
+    <url>http://www.grantmywish.es</url>
+    <inceptionYear>2011</inceptionYear>
+    <description>
+        An advanced wishlist.
+    </description>
+
+    <organization>
+        <name>Lyndir</name>
+        <url>http://www.lyndir.com</url>
+    </organization>
+
+
+    <!-- CODE MANAGEMENT -->
+    <scm>
+        <url>${scm.github.webbase}/GrantMyWish.es</url>
+        <connection>${scm.github.pubbase}/GrantMyWish.es.git</connection>
+        <developerConnection>${scm.github.devbase}/GrantMyWish.es.git</developerConnection>
+    </scm>
+    <issueManagement>
+        <system>YouTrack</system>
+        <url>https://youtrack.lyndir.com/issues/WISH</url>
+    </issueManagement>
+
+
+    <!-- BUILD CONFIGURATION -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <!--goal>run</goal--><!-- For db4o 8.0 only -->
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <path id="project.classpath">
+                                    <path refid="maven.compile.classpath" />
+                                    <path refid="maven.plugin.classpath" />
+                                    <path refid="maven.runtime.classpath" />
+                                </path>
+                                <taskdef name="db4o-enhance" classname="com.db4o.enhance.Db4oEnhancerAntTask"
+                                         classpathref="project.classpath" />
+                                <db4o-enhance classtargetdir="${project.build.outputDirectory}" nq="true" ta="true" collections="true">
+                                    <classpath refid="project.classpath" />
+                                    <sources dir="${project.build.outputDirectory}">
+                                        <include name="**/*.class" />
+                                    </sources>
+                                </db4o-enhance>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.db4o</groupId>
+                        <artifactId>db4o-tools-java5</artifactId>
+                        <version>${db4o.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.db4o</groupId>
+                        <artifactId>db4o-instrumentation-java5</artifactId>
+                        <version>${db4o.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.db4o</groupId>
+                        <artifactId>db4o-nqopt-java5</artifactId>
+                        <version>${db4o.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.db4o</groupId>
+                        <artifactId>db4o-taj-java5</artifactId>
+                        <version>${db4o.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.db4o</groupId>
+                        <artifactId>db4o-core-java5</artifactId>
+                        <version>${db4o.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>edu.purdue.cs.bloat</groupId>
+                        <artifactId>bloat</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- DEPENDENCY MANAGEMENT -->
+    <dependencies>
+
+        <!-- Opal -->
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-wicket</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Web -->
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-guice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assisted-inject</artifactId>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>com.db4o</groupId>
+            <artifactId>db4o-core-java5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.db4o</groupId>
+            <artifactId>db4o-taj-java5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.neodatis</groupId>
+            <artifactId>neodatis-odb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mortennobel</groupId>
+            <artifactId>java-image-scaling</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!-- REMOTE ARTIFACT REPOSITORIES -->
+    <repositories>
+        <repository>
+            <id>lyndir</id>
+            <name>Lyndir Repository</name>
+            <url>http://maven.lyndir.com</url>
+
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+</project>
+

@@ -1,0 +1,109 @@
+html {
+    height:100%;
+    background:                 -moz-radial-gradient(90% 90%, farthest-side, #CCC, #FFF);
+    background:                 -webkit-gradient(radial, 60% 90%, 0, 60% 90%, 1000, from(#CCC), to(#FFF));
+    overflow:hidden;
+}
+body {
+    color:                      #444;
+
+    position:                   relative;
+    height:                     100%;
+    margin:                     0;
+
+    font-family:                "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-weight:                100;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:                      #111;
+    text-shadow:                #BBB 0 1px 1px;
+
+    padding:                    0.5em 1em 0;
+
+    font-family:                Baskerville, "Palatino Linotype", Palatino, Cambria, Times, "Times New Roman", serif;
+}
+h1 .sub {
+    font-size:                  0.5em;
+}
+p {
+    text-shadow:                #CCC 0 1px 2px;
+
+    text-align:                 justify;
+}
+a, a:link, .link {
+    color:                      black;
+
+    text-decoration:            underline;
+    cursor:                     pointer;
+}
+a:hover, .link:hover {
+    color:                      black;
+
+    text-decoration:            none;
+}
+
+
+/* Page */
+#head {
+    background:                 url('../images/layout/head.png') no-repeat center top;
+
+    box-model:                  border-box;
+    height:                     160px;
+    padding-top:                100px;
+}
+#head h1 {
+    color:                      #CCC;
+    text-shadow:                #FFF 0 1px 1px;
+
+    margin:                     -1em auto 0;
+    padding:                    0;
+    width:                      900px;
+
+    text-align:                 right;
+    font-family:                "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-weight:                normal;
+}
+#head h1 .sub {
+    font-weight: bold;
+}
+#head ul {
+    margin:                     0;
+
+    text-align:                 center;
+    list-style:                 none;
+}
+#head li {
+    display:                    inline-block;
+    width:                      28px;
+
+    text-align:                 left;
+}
+#head li a {
+    color:                      #AAA;
+
+    position:                   absolute;
+    overflow:                   hidden;
+    padding-top:                28px;
+    height:                     0;
+
+    text-decoration:            none;
+
+    -webkit-transition:         width 0.2s ease-in-out;
+    -moz-transition:            all 0.2s ease-in-out;
+    -o-transition:              all 0.2s ease-in-out;
+    -ms-transition:             all 0.2s ease-in-out;
+    transition:                 all 0.2s ease-in-out;
+}
+#head li a:hover {
+    height:                     1em;
+}
+
+#content {
+    background:                 rgba(255, 255, 255, 0.3);
+    border:                     1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:                 inset 0 0 15px rgba(255, 255, 255, 0.5), 2px 2px 6px rgba(200, 200, 200, 0.5);
+
+    margin:                     auto;
+    padding:                    1em 400px;
+    height: 100%;
+}

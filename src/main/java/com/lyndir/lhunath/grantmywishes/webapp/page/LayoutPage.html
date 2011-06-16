@@ -18,13 +18,73 @@
     <body>
         <div id="head">
             <h1><span class="sub">the stuff of fantasy &mdash;</span> grantmywish.es</h1>
-            <ul>
-                <li><a class="s28 business magnifying-glass-ps">Find Wishes</a></li>
-                <li><a class="s28 people rocking-horse-sc44">Add a Wish</a></li>
+            <ul class="nav menu">
+                <li>
+                    <a class="s32 business magnifying-glass-ps" href="#"></a>
+
+                    <div>
+                        <h2>Looking for somebody or something?</h2>
+                        <input type="text" placeholder="A person, event, wish list or wish" />
+
+                        <ul class="misc menu">
+                            <li>
+                                <a href="#">My friends</a>
+                            </li>
+                            <li>
+                                <a href="#">Recent people</a>
+                            </li>
+                            <li>
+                                <a href="#">Random love</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a class="s32 people rocking-horse-sc44" href="#"></a>
+
+                    <div>
+                        <h2>Wishing for something new?</h2>
+                        <input type="text" placeholder="A product name or URL to a product page or image" />
+
+                        <ul class="misc menu">
+                            <li>
+                                <a href="#">Friend wishes</a>
+                            </li>
+                            <li>
+                                <a href="#">Most wanted</a>
+                            </li>
+                            <li>
+                                <a href="#">Recommendations</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a class="s32 people hat6-sc44" href="#"></a>
+
+                    <div>
+                        <h2>Any questions?</h2>
+                        <input type="text" placeholder="A question or some keywords" />
+
+                        <ul class="misc menu">
+                            <li>
+                                <a href="#">Community</a>
+                            </li>
+                            <li>
+                                <a href="#">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="#">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
-        <div id="content">
-            <wicket:child />
+        <div class="stripe">
+            <div id="content">
+                <wicket:child />
+            </div>
         </div>
         <div id="foot" />
     </body>

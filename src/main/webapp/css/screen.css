@@ -1,7 +1,7 @@
 html {
     background:                 -moz-radial-gradient(50% 50% 0deg,ellipse farthest-side, #CCC, #FFF);
-    background:                     -webkit-gradient(radial, 800 900, 0, 800 900, 1000, from(#CCC), to(#FFF));
     background:                   -o-linear-gradient(0deg, #FFF, #EEE 50%, #FFF);
+    background:                     -webkit-gradient(radial, 800 900, 0, 800 900, 1000, from(#CCC), to(#FFF));
 
     height:                     100%;
 }
@@ -70,10 +70,10 @@ input[type=text] {
     padding:                    0.7ex 1em;
 
     -webkit-transition:         all 0.2s ease-in-out;
-    -moz-transition:            all 0.2s ease-in-out;
-    -o-transition:              all 0.2s ease-in-out;
-    -ms-transition:             all 0.2s ease-in-out;
-    transition:                 all 0.2s ease-in-out;
+       -moz-transition:         all 0.2s ease-in-out;
+        -ms-transition:         all 0.2s ease-in-out;
+         -o-transition:         all 0.2s ease-in-out;
+            transition:         all 0.2s ease-in-out;
 }
 input[type=text]:hover {
     border-color:               #AAA;
@@ -165,10 +165,10 @@ menu>li>a {
     vertical-align:             top;
 
     -webkit-transition:         all 0.15s ease-in-out;
-    -moz-transition:            all 0.15s ease-in-out;
-    -o-transition:              all 0.15s ease-in-out;
-    -ms-transition:             all 0.15s ease-in-out;
-    transition:                 all 0.15s ease-in-out;
+       -moz-transition:         all 0.15s ease-in-out;
+        -ms-transition:         all 0.15s ease-in-out;
+         -o-transition:         all 0.15s ease-in-out;
+            transition:         all 0.15s ease-in-out;
 }
 menu>li:hover>a {
     background-color:           rgba(230, 230, 230, 1);
@@ -243,10 +243,10 @@ header nav>menu>li>div {
     text-align:                 center;
 
     -webkit-transition:         all 0.2s ease-in-out;
-    -moz-transition:            all 0.2s ease-in-out;
-    -o-transition:              all 0.2s ease-in-out;
-    -ms-transition:             all 0.2s ease-in-out;
-    transition:                 all 0.2s ease-in-out;
+       -moz-transition:         all 0.2s ease-in-out;
+        -ms-transition:         all 0.2s ease-in-out;
+         -o-transition:         all 0.2s ease-in-out;
+            transition:         all 0.2s ease-in-out;
 }
 header nav>menu>li:hover>div {
     opacity:                    1;
@@ -254,10 +254,10 @@ header nav>menu>li:hover>div {
     max-height:                 100%;
 
     -webkit-transition:         all 0.3s ease-in-out;
-    -moz-transition:            all 0.3s ease-in-out;
-    -o-transition:              all 0.3s ease-in-out;
-    -ms-transition:             all 0.3s ease-in-out;
-    transition:                 all 0.3s ease-in-out;
+       -moz-transition:         all 0.3s ease-in-out;
+        -ms-transition:         all 0.3s ease-in-out;
+         -o-transition:         all 0.3s ease-in-out;
+            transition:         all 0.3s ease-in-out;
 }
 header nav>menu>li>div>h2 {
     margin-top:                 0;
@@ -292,10 +292,10 @@ header nav>menu>li>div>h2 {
     min-height:                 100%;
 
     -webkit-transition:         opacity 0.2s ease-in-out;
-    -moz-transition:            opacity 0.2s ease-in-out;
-    -o-transition:              opacity 0.2s ease-in-out;
-    -ms-transition:             opacity 0.2s ease-in-out;
-    transition:                 opacity 0.2s ease-in-out;
+       -moz-transition:         opacity 0.2s ease-in-out;
+        -ms-transition:         opacity 0.2s ease-in-out;
+         -o-transition:         opacity 0.2s ease-in-out;
+            transition:         opacity 0.2s ease-in-out;
 }
 #content section.current {
     opacity:                    1;

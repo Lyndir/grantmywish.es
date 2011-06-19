@@ -1,4 +1,12 @@
-.s32.animals                      { background: transparent url("32x32/animals.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 32px; height: 32px; }
+.s32.animals                      {
+    background-image: url("32x32/animals.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 0 0 32px;
+    height: 32px;
+    font-size: 24px;
+}
 .s32.animals.animal-antz          { background-position:   -0px   -0px; }
 .s32.animals.animal-bear          { background-position:   -0px  -32px; }
 .s32.animals.animal-bear3         { background-position:   -0px  -64px; }

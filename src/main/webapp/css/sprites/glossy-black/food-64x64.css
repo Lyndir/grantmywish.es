@@ -1,4 +1,12 @@
-.s64.food                      { background: transparent url("64x64/food.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 64px; height: 64px; }
+.s64.food                      {
+    background-image: url("64x64/food.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 8px 0 0 64px;
+    height: 64px;
+    font-size: 48px;
+}
 .s64.food.coffee-maker         { background-position:   -0px   -0px; }
 .s64.food.coffee-tea           { background-position:   -0px  -64px; }
 .s64.food.corkscrew-sc43       { background-position:   -0px -128px; }

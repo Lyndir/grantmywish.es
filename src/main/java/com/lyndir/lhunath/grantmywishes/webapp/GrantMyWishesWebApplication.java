@@ -1,7 +1,7 @@
 package com.lyndir.lhunath.grantmywishes.webapp;
 
 import com.lyndir.lhunath.grantmywishes.webapp.listener.GrantMyWishesGuiceContext;
-import com.lyndir.lhunath.grantmywishes.webapp.page.HomePage;
+import com.lyndir.lhunath.grantmywishes.webapp.page.LayoutPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.guice.InjectionFlagCachingGuiceComponentInjector;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -28,7 +28,7 @@ public class GrantMyWishesWebApplication extends WebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
 
-        return HomePage.class;
+        return LayoutPage.class;
     }
 
     public static GrantMyWishesWebApplication get() {

@@ -4,8 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.wicket.behavior.StringHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.util.template.JavaScriptTemplate;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
@@ -17,11 +16,16 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
  *
  * @author lhunath
  */
-public abstract class LayoutPage extends WebPage {
+public class LayoutPage extends WebPage {
 
-    protected LayoutPage() {
+    private IModel<?> pageTitle = Model.of( "grantmywish.es" );
 
-        add( new Label( "pageTitle", getPageTitle() ) );
+    @Override
+    protected void onInitialize() {
+
+        super.onInitialize();
+
+        add( new Label( "pageTitle", pageTitle ) );
         add(
                 new StringHeaderContributor(
                         new LoadableDetachableModel<String>() {
@@ -34,6 +38,4 @@ public abstract class LayoutPage extends WebPage {
                             }
                         } ) );
     }
-
-    protected abstract IModel<String> getPageTitle();
 }

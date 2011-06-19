@@ -1,4 +1,12 @@
-.s28.sports                      { background: transparent url("28x28/sports.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 28px; height: 28px; }
+.s28.sports                      {
+    background-image: url("28x28/sports.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 3px 0 0 28px;
+    height: 28px;
+    font-size: 21px;
+}
 .s28.sports.art-palette-sc44     { background-position:   -0px   -0px; }
 .s28.sports.art-palette1-sc44    { background-position:   -0px  -28px; }
 .s28.sports.backpack             { background-position:   -0px  -56px; }

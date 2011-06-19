@@ -1,4 +1,12 @@
-.s32.social                      { background: transparent url("32x32/social.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 32px; height: 32px; }
+.s32.social                      {
+    background-image: url("32x32/social.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 0 0 32px;
+    height: 32px;
+    font-size: 24px;
+}
 .s32.social.aim-logo-square      { background-position:   -0px   -0px; }
 .s32.social.aim                  { background-position:   -0px  -32px; }
 .s32.social.blinklist-logo-square { background-position:   -0px  -64px; }

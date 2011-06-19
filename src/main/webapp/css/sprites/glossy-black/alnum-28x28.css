@@ -1,4 +1,12 @@
-.s28.alnum                      { background: transparent url("28x28/alnum.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 28px; height: 28px; }
+.s28.alnum                      {
+    background-image: url("28x28/alnum.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 3px 0 0 28px;
+    height: 28px;
+    font-size: 21px;
+}
 .s28.alnum.ampersand3           { background-position:   -0px   -0px; }
 .s28.alnum.asterisk             { background-position:   -0px  -28px; }
 .s28.alnum.at-sign              { background-position:   -0px  -56px; }

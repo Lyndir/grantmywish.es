@@ -1,4 +1,12 @@
-.s28.animals                      { background: transparent url("28x28/animals.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 28px; height: 28px; }
+.s28.animals                      {
+    background-image: url("28x28/animals.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 3px 0 0 28px;
+    height: 28px;
+    font-size: 21px;
+}
 .s28.animals.animal-antz          { background-position:   -0px   -0px; }
 .s28.animals.animal-bear          { background-position:   -0px  -28px; }
 .s28.animals.animal-bear3         { background-position:   -0px  -56px; }

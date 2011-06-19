@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
     <head>
         <title wicket:id="pageTitle">[Page Title]</title>
@@ -13,80 +12,235 @@
         <link rel="stylesheet" type="text/css" href="css/sprites/glossy-black/sprites.css" />
         <link rel="stylesheet" type="text/css" href="css/sprites/silk/sprites.css" />
         <link rel="stylesheet" type="text/css" href="css/screen.css" />
+
+        <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var windowHash = window.location.hash;
+            var foundCurrent, contentElement;
+
+            function hashChanged() {
+                foundCurrent = false;
+                contentElement = $(windowHash + "-content");
+                if (contentElement.size() != 1)
+                    contentElement = $("#about-content");
+
+                $("#content section").each(function (i) {
+                    if (foundCurrent)
+                        this.className = "future";
+                    else {
+                        if (this.id == contentElement.attr("id")) {
+                            foundCurrent = true;
+                            this.className = "current";
+                        } else
+                            this.className = "past";
+                    }
+                });
+            }
+
+            $(document).ready(function() {
+                hashChanged();
+                window.setInterval(function () {
+                    if (window.location.hash != windowHash) {
+                        windowHash = window.location.hash;
+                        hashChanged();
+                    }
+                }, 100);
+            });
+        </script>
     </head>
 
     <body>
-        <div id="head">
-            <h1><span class="sub">the stuff of fantasy &mdash;</span> grantmywish.es</h1>
-            <ul class="nav menu">
-                <li>
-                    <a class="s32 business magnifying-glass-ps" href="#"></a>
+        <header>
+            <h1>grantmywish.es</h1>
+            <nav>
+                <menu>
+                    <li>
+                        <a class="s32 alnum information3-sc49" href="#about"></a>
+                    </li>
+                    <li>
+                        <a class="s32 business magnifying-glass-ps" href="#search"></a>
 
-                    <div>
-                        <h2>Looking for somebody or something?</h2>
-                        <input type="text" placeholder="A person, event, wish list or wish" />
+                        <div>
+                            <h2>Looking for somebody or something?</h2>
+                            <input type="text" placeholder="A person, event, wish list or wish" />
 
-                        <ul class="misc menu">
-                            <li>
-                                <a href="#">My friends</a>
-                            </li>
-                            <li>
-                                <a href="#">Recent people</a>
-                            </li>
-                            <li>
-                                <a href="#">Random love</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a class="s32 people rocking-horse-sc44" href="#"></a>
+                            <menu class="misc">
+                                <li>
+                                    <a href="#">My friends</a>
+                                </li>
+                                <li>
+                                    <a href="#">Recent people</a>
+                                </li>
+                                <li>
+                                    <a href="#">Random love</a>
+                                </li>
+                            </menu>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="s32 people rocking-horse-sc44" href="#record"></a>
 
-                    <div>
-                        <h2>Wishing for something new?</h2>
-                        <input type="text" placeholder="A product name or URL to a product page or image" />
+                        <div>
+                            <h2>Wishing for something new?</h2>
+                            <input type="text" placeholder="A product name or URL to a product page or image" />
 
-                        <ul class="misc menu">
-                            <li>
-                                <a href="#">Friend wishes</a>
-                            </li>
-                            <li>
-                                <a href="#">Most wanted</a>
-                            </li>
-                            <li>
-                                <a href="#">Recommendations</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a class="s32 people hat6-sc44" href="#"></a>
+                            <menu class="misc">
+                                <li>
+                                    <a href="#">Friend wishes</a>
+                                </li>
+                                <li>
+                                    <a href="#">Most wanted</a>
+                                </li>
+                                <li>
+                                    <a href="#">Recommendations</a>
+                                </li>
+                            </menu>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="s32 people hand-left1-ps" href="#profile"></a>
 
-                    <div>
-                        <h2>Any questions?</h2>
-                        <input type="text" placeholder="A question or some keywords" />
+                        <div>
+                            <h2>Want to update your profile or wish lists?</h2>
+                            <input type="text" placeholder="A wish, wish list, or profile attribute" />
 
-                        <ul class="misc menu">
-                            <li>
-                                <a href="#">Community</a>
-                            </li>
-                            <li>
-                                <a href="#">FAQ</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact Us</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="stripe">
-            <div id="content">
-                <wicket:child />
+                            <menu class="misc">
+                                <li>
+                                    <a href="#">My profile</a>
+                                </li>
+                                <li>
+                                    <a href="#">My wishes</a>
+                                </li>
+                                <li>
+                                    <a href="#">My wish lists</a>
+                                </li>
+                            </menu>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="s32 people hat6-sc44" href="#support"></a>
+
+                        <div>
+                            <h2>Any questions?</h2>
+                            <input type="text" placeholder="A question or some keywords" />
+
+                            <menu class="misc">
+                                <li>
+                                    <a href="#">Community</a>
+                                </li>
+                                <li>
+                                    <a href="#">FAQ</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact Us</a>
+                                </li>
+                            </menu>
+                        </div>
+                    </li>
+                </menu>
+            </nav>
+        </header>
+        <div id="content" class="stripe">
+            <div class="inner">
+                <section id="about-content" class="current">
+                    <h1>Welcome to grantmywish.es</h1>
+
+                    <p>
+                        Our lives are filled with wonderful and social events, from holidays to birthdays, from weddings to newborns. </p>
+
+                    <p>
+                        These days are so memorable, not only because of the joy of spending it with friends and family, but because of the
+                        effort
+                        we've put into preparing them. For as long as we've celebrated events socially, we've enjoyed receiving gifts, but
+                        also
+                        finding the right gift for the right person. </p>
+
+                    <p>
+                        And as hard as finding the right gift is, it's sometimes harder to receive the wrong gift and not be
+                        disappointed. </p>
+
+                    <p>
+                        As much as we love to try and take on these challenges ourselves, let us help you make your next celebrations even
+                        more
+                        perfect! </p>
+
+                    <p>
+                        With <a href="http://www.grantmywish.es">grantmywish.es</a>, you can record anything that draws your interest in a
+                        big
+                        wish-basket. The next time your birthday or christmas comes up, fill a wishlist from your wishes and make sure your
+                        friends
+                        and family know about it! <a href="http://www.grantmywish.es">grantmywish.es</a> will assist them in granting your
+                        wishes
+                        while supporting each's own budget and preferences. </p>
+
+                    <p>
+                        Are you the type of person that never knows what to buy? Haven't got the time for browsing the mall for that perfect
+                        gift?
+                        Or perhaps you simply don't know somebody well enough to buy them the stuff of their dreams. Recommend
+                        <a href="http://www.grantmywish.es">grantmywish.es</a>, and make everybody happy! </p>
+                </section>
+                <section id="search-content" class="future">
+                    <h1>Results for <q>maarten</q></h1>
+                    <dl>
+                        <dt>People</dt>
+                        <dd>
+                            <img src="http://www.gravatar.com/avatar/224a463cdd728047bfc83a1504b98181" />
+
+                            <h3><mark>Maarten</mark> Billemont</h3>
+
+                            <p>
+                                Maarten has <a href="#">3 wish lists</a> and <a href="#">34 unfulfilled wishes</a> in total. </p>
+                        </dd>
+                    </dl>
+                </section>
+                <section id="record-content" class="future">
+                    <h1>Results for <q>iphone</q></h1>
+                    <dl>
+                        <dt>Known wishes</dt>
+                        <dd>
+                            <img width="200" src="http://cdn.cbsi.com.au/story_media/339303698/iphone4_1.jpg" />
+
+                            <h3><mark>iPhone</mark> 4, 32GB</h3>
+
+                            <p>
+                                The iPhone 4 is a touchscreen smartphone developed by Apple. It is the fourth generation of iPhone, and
+                                successor to the iPhone 3GS. It is particularly marketed for video calling (marketed by Apple as FaceTime),
+                                consumption of media such as books and periodicals, movies, music, and games, and for general web and e-mail
+                                access. </p>
+                        </dd>
+                        <dt><a href="#">Create a new wish</a></dt>
+                    </dl>
+                </section>
+                <section id="profile-content" class="future">
+                    <h1>Results for <q>name</q></h1>
+
+                    <dl>
+                        <dt>Profile</dt>
+                        <dd>
+                            <label>Given <mark>Name</mark>(s):</label>
+                            <input type="text" value="Maarten" />
+                        </dd>
+                        <dd>
+                            <label>Family <mark>Name</mark>:</label>
+                            <input type="text" value="Billemont" />
+                        </dd>
+                    </dl>
+                </section>
+                <section id="support-content" class="future">
+                    <h2>Results for <q>list</q></h2>
+                    <dl>
+                        <dt>FAQ</dt>
+                        <dd>
+                            <h3>How do I create a new wish <mark>list</mark>?</h3>
+
+                            <p>
+                                To create a new wish list, navigate to your wish lists and press the <b>new wish list</b> button. </p>
+                        </dd>
+                    </dl>
+                </section>
             </div>
         </div>
-        <div id="foot" />
+        <footer></footer>
     </body>
 
 </html>

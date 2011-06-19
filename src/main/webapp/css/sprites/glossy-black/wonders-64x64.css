@@ -1,4 +1,12 @@
-.s64.wonders                      { background: transparent url("64x64/wonders.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 64px; height: 64px; }
+.s64.wonders                      {
+    background-image: url("64x64/wonders.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 8px 0 0 64px;
+    height: 64px;
+    font-size: 48px;
+}
 .s64.wonders.acorn-sc48           { background-position:   -0px   -0px; }
 .s64.wonders.cactus-sc48          { background-position:   -0px  -64px; }
 .s64.wonders.fire                 { background-position:   -0px -128px; }

@@ -1,4 +1,12 @@
-.s28.culture                      { background: transparent url("28x28/culture.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 28px; height: 28px; }
+.s28.culture                      {
+    background-image: url("28x28/culture.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 3px 0 0 28px;
+    height: 28px;
+    font-size: 21px;
+}
 .s28.culture.angel-halo           { background-position:   -0px   -0px; }
 .s28.culture.angel-trumpet        { background-position:   -0px  -28px; }
 .s28.culture.astrology-aquarius   { background-position:   -0px  -56px; }

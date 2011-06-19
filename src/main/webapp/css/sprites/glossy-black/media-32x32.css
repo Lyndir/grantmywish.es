@@ -1,4 +1,12 @@
-.s32.media                      { background: transparent url("32x32/media.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 32px; height: 32px; }
+.s32.media                      {
+    background-image: url("32x32/media.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 0 0 32px;
+    height: 32px;
+    font-size: 24px;
+}
 .s32.media.a-media21-arrow-back { background-position:   -0px   -0px; }
 .s32.media.a-media22-arrow-forward1 { background-position:   -0px  -32px; }
 .s32.media.a-media23-arrows-seek-back { background-position:   -0px  -64px; }

@@ -1,4 +1,12 @@
-.s32.business                      { background: transparent url("32x32/business.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 32px; height: 32px; }
+.s32.business                      {
+    background-image: url("32x32/business.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 0 0 32px;
+    height: 32px;
+    font-size: 24px;
+}
 .s32.business.bag-paper1           { background-position:   -0px   -0px; }
 .s32.business.bag-paper2           { background-position:   -0px  -32px; }
 .s32.business.bag-paper3           { background-position:   -0px  -64px; }

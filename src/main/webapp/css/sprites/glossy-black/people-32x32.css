@@ -1,4 +1,12 @@
-.s32.people                      { background: transparent url("32x32/people.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 32px; height: 32px; }
+.s32.people                      {
+    background-image: url("32x32/people.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 0 0 32px;
+    height: 32px;
+    font-size: 24px;
+}
 .s32.people.baby-stoller2        { background-position:   -0px   -0px; }
 .s32.people.baby-stroller        { background-position:   -0px  -32px; }
 .s32.people.baby-stroller1       { background-position:   -0px  -64px; }

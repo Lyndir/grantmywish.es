@@ -1,4 +1,12 @@
-.s64.media                      { background: transparent url("64x64/media.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 64px; height: 64px; }
+.s64.media                      {
+    background-image: url("64x64/media.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 8px 0 0 64px;
+    height: 64px;
+    font-size: 48px;
+}
 .s64.media.a-media21-arrow-back { background-position:   -0px   -0px; }
 .s64.media.a-media22-arrow-forward1 { background-position:   -0px  -64px; }
 .s64.media.a-media23-arrows-seek-back { background-position:   -0px -128px; }

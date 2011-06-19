@@ -1,4 +1,12 @@
-.s32.arrows                      { background: transparent url("32x32/arrows.png") no-repeat; display: inline-block; overflow: hidden; padding-left: 32px; height: 32px; }
+.s32.arrows                      {
+    background-image: url("32x32/arrows.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 4px 0 0 32px;
+    height: 32px;
+    font-size: 24px;
+}
 .s32.arrows.arrow-1turn2-down    { background-position:   -0px   -0px; }
 .s32.arrows.arrow-check          { background-position:   -0px  -32px; }
 .s32.arrows.arrow-circle-refresh { background-position:   -0px  -64px; }

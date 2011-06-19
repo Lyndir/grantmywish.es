@@ -2,9 +2,9 @@ package com.lyndir.lhunath.grantmywishes.webapp.page;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.lyndir.lhunath.opal.wayward.behavior.CSSClassAttributeAppender;
 import java.util.List;
 import org.apache.wicket.behavior.StringHeaderContributor;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -24,12 +24,12 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
  */
 public class LayoutPage extends WebPage {
 
-    private IModel<?>                                     pageTitle = Model.of( "grantmywish.es" );
-    private IModel<? extends List<? extends SectionInfo>> sections  = new LoadableDetachableModel<List<? extends SectionInfo>>() {
+    private final IModel<?>                           pageTitle = Model.of( "grantmywish.es" );
+    private final IModel<? extends List<SectionInfo>> sections  = new LoadableDetachableModel<List<SectionInfo>>() {
         @Override
-        protected List<? extends SectionInfo> load() {
+        protected List<SectionInfo> load() {
 
-            return ImmutableList.of( new SectionInfo( id ) );
+            return ImmutableList.copyOf( SectionInfo.values() );
         }
     };
 
@@ -56,10 +56,12 @@ public class LayoutPage extends WebPage {
                     @Override
                     protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
 
+                        SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+
                         sectionInfoListItem.add(
-                                new ExternalLink(
-                                        "toolItem", String.format( "#%s", sectionInfoListItem.getModelObject().getId() ) ) );
-                        sectionInfoListItem.add( sectionInfoListItem.getModelObject().getToolPanel( "toolPanel" ) );
+                                new ExternalLink( "toolItem", String.format( "#%s", sectionInfo.getId() ) ).add(
+                                        new CSSClassAttributeAppender( sectionInfo.getToolItemSprite() ) ) );
+                        sectionInfoListItem.add( sectionInfo.getToolPanel( "toolPanel" ) );
                     }
                 } );
     }

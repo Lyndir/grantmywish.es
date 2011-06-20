@@ -2,6 +2,7 @@ package com.lyndir.lhunath.grantmywishes.webapp.page;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.lyndir.lhunath.grantmywishes.webapp.section.SectionInfo;
 import com.lyndir.lhunath.opal.wayward.behavior.CSSClassAttributeAppender;
 import java.util.List;
 import org.apache.wicket.behavior.StringHeaderContributor;
@@ -62,6 +63,18 @@ public class LayoutPage extends WebPage {
                                 new ExternalLink( "toolItem", String.format( "#%s", sectionInfo.getId() ) ).add(
                                         new CSSClassAttributeAppender( sectionInfo.getToolItemSprite() ) ) );
                         sectionInfoListItem.add( sectionInfo.getToolPanel( "toolPanel" ) );
+                    }
+                } );
+        add(
+                new ListView<SectionInfo>( "sections", sections ) {
+                    @Override
+                    protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+
+                        SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+
+                        sectionInfoListItem.add(
+                                sectionInfo.getContentPanel( "contentPanel" ).setMarkupId(
+                                        String.format( "%s-content", sectionInfo.getId() ) ).setOutputMarkupId( true ) );
                     }
                 } );
     }

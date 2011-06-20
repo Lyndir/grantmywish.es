@@ -1,9 +1,11 @@
 package com.lyndir.lhunath.grantmywishes.webapp.page;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.lyndir.lhunath.grantmywishes.webapp.section.SectionInfo;
+import com.lyndir.lhunath.grantmywishes.webapp.section.SectionNavigationController;
 import com.lyndir.lhunath.opal.wayward.behavior.CSSClassAttributeAppender;
+import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
+import com.lyndir.lhunath.opal.wayward.navigation.FragmentNavigationListener;
 import java.util.List;
 import org.apache.wicket.behavior.StringHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
@@ -25,12 +27,12 @@ import org.apache.wicket.util.template.PackagedTextTemplate;
  */
 public class LayoutPage extends WebPage {
 
-    private final IModel<?>                           pageTitle = Model.of( "grantmywish.es" );
-    private final IModel<? extends List<SectionInfo>> sections  = new LoadableDetachableModel<List<SectionInfo>>() {
+    private final IModel<?>                                 pageTitle = Model.of( "grantmywish.es" );
+    private final IModel<? extends List<SectionInfo<?, ?>>> sections  = new LoadableDetachableModel<List<SectionInfo<?, ?>>>() {
         @Override
-        protected List<SectionInfo> load() {
+        protected List<SectionInfo<?, ?>> load() {
 
-            return ImmutableList.copyOf( SectionInfo.values() );
+            return SectionInfo.sections;
         }
     };
 
@@ -38,6 +40,9 @@ public class LayoutPage extends WebPage {
     protected void onInitialize() {
 
         super.onInitialize();
+
+        AjaxHooks.installAjaxEvents( this );
+        AjaxHooks.installPageEvents( this, FragmentNavigationListener.PageListener.of( SectionNavigationController.get() ) );
 
         add( new Label( "pageTitle", pageTitle ) );
         add(
@@ -51,13 +56,12 @@ public class LayoutPage extends WebPage {
                                                 .put( "pageView", getPageClass().getSimpleName() ).build() );
                             }
                         } ) );
-
         add(
-                new ListView<SectionInfo>( "navMenu", sections ) {
+                new ListView<SectionInfo<?, ?>>( "navMenu", sections ) {
                     @Override
-                    protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+                    protected void populateItem(final ListItem<SectionInfo<?, ?>> sectionInfoListItem) {
 
-                        SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+                        SectionInfo<?, ?> sectionInfo = sectionInfoListItem.getModelObject();
 
                         sectionInfoListItem.add(
                                 new ExternalLink( "toolItem", String.format( "#%s", sectionInfo.getId() ) ).add(
@@ -66,15 +70,13 @@ public class LayoutPage extends WebPage {
                     }
                 } );
         add(
-                new ListView<SectionInfo>( "sections", sections ) {
+                new ListView<SectionInfo<?, ?>>( "sections", sections ) {
                     @Override
-                    protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+                    protected void populateItem(final ListItem<SectionInfo<?, ?>> sectionInfoListItem) {
 
-                        SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+                        SectionInfo<?, ?> sectionInfo = sectionInfoListItem.getModelObject();
 
-                        sectionInfoListItem.add(
-                                sectionInfo.getContentPanel( "contentPanel" ).setMarkupId(
-                                        String.format( "%s-content", sectionInfo.getId() ) ).setOutputMarkupId( true ) );
+                        sectionInfoListItem.add( sectionInfo.getContentPanel( "contentPanel" ) );
                     }
                 } );
     }

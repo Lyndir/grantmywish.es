@@ -1,5 +1,9 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
+import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
+import org.jetbrains.annotations.NotNull;
+
+
 /**
  * <i>06 19, 2011</i>
  *
@@ -12,12 +16,26 @@ public class SectionContentSearch extends SectionContent {
         super( id );
     }
 
-    public static class SectionStateSearch implements SectionState {
+    public static class SectionStateSearch extends SectionState<SectionContentSearch> {
+
+        public SectionStateSearch(final SectionContentSearch content) {
+
+        }
+
+        public SectionStateSearch(final String fragment) {
+
+        }
 
         @Override
         public String toFragment() {
 
             return null;
+        }
+
+        @Override
+        public void apply(@NotNull final SectionContentSearch panel)
+                throws IncompatibleStateException {
+
         }
     }
 }

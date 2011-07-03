@@ -15,13 +15,15 @@
  */
 package com.lyndir.lhunath.grantmywishes.webapp.listener;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.inject.*;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
+import com.lyndir.lhunath.grantmywishes.data.DAOModule;
+import com.lyndir.lhunath.grantmywishes.model.ServiceModule;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesWebApplication;
+import com.lyndir.lhunath.opal.wayward.servlet.DisableURLSessionFilter;
 import javax.servlet.ServletContext;
 import org.apache.wicket.Application;
 import org.apache.wicket.protocol.http.*;
@@ -47,26 +49,29 @@ public class GrantMyWishesGuiceContext extends GuiceServletContextListener {
     protected Injector getInjector() {
 
         return Guice.createInjector(
-                Stage.DEVELOPMENT, ImmutableList.<Module>builder().add(
-                new ServletModule() {
+                Stage.DEVELOPMENT, new DAOModule(), new ServiceModule(), new ServletModule() {
 
-                    @Override
-                    protected void configureServlets() {
+            @Override
+            protected void configureServlets() {
 
-                        Builder<String, String> paramBuilder;
+                Builder<String, String> paramBuilder;
 
-                        // Wicket
-                        paramBuilder = new ImmutableMap.Builder<String, String>();
-                        paramBuilder.put( WicketFilter.APP_FACT_PARAM, ContextParamWebApplicationFactory.class.getCanonicalName() );
-                        paramBuilder.put(
-                                ContextParamWebApplicationFactory.APP_CLASS_PARAM, GrantMyWishesWebApplication.class.getCanonicalName() );
-                        paramBuilder.put( WicketFilter.FILTER_MAPPING_PARAM, PATH_WICKET );
-                        paramBuilder.put( Application.CONFIGURATION, Application.DEPLOYMENT );
+                // Disable jsessionid in URLs.
+                filter( "/*" ).through( DisableURLSessionFilter.class );
+                bind( DisableURLSessionFilter.class ).in( Scopes.SINGLETON );
 
-                        filter( PATH_WICKET ).through( wicketFilter, paramBuilder.build() );
-                        bind( WicketFilter.class ).in( Scopes.SINGLETON );
-                    }
-                } ).build() );
+                // Wicket
+                paramBuilder = new ImmutableMap.Builder<String, String>();
+                paramBuilder.put( WicketFilter.APP_FACT_PARAM, ContextParamWebApplicationFactory.class.getCanonicalName() );
+                paramBuilder.put(
+                        ContextParamWebApplicationFactory.APP_CLASS_PARAM, GrantMyWishesWebApplication.class.getCanonicalName() );
+                paramBuilder.put( WicketFilter.FILTER_MAPPING_PARAM, PATH_WICKET );
+                paramBuilder.put( Application.CONFIGURATION, Application.DEVELOPMENT );
+
+                filter( PATH_WICKET ).through( wicketFilter, paramBuilder.build() );
+                bind( WicketFilter.class ).in( Scopes.SINGLETON );
+            }
+        } );
     }
 
     /**

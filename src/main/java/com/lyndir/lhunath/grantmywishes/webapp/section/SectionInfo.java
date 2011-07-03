@@ -1,9 +1,8 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
-import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.wayward.navigation.FragmentNavigationTab;
-import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
+import com.lyndir.lhunath.opal.system.util.Throw;
+import com.lyndir.lhunath.opal.wayward.navigation.TabDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -16,35 +15,41 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public class SectionInfo<P extends SectionContent, S extends SectionState> implements FragmentNavigationTab<P, S> {
+public enum SectionInfo implements TabDescriptor<SectionContent, SectionState<SectionContent>> {
 
-    public static final SectionInfo<SectionContentAbout, SectionContentAbout.SectionStateAbout>       ABOUT    = new SectionInfo<SectionContentAbout, SectionContentAbout.SectionStateAbout>(
-            "about", null, "alnum information3-sc49", SectionContentAbout.class );
-    public static final SectionInfo<SectionContentSearch, SectionContentSearch.SectionStateSearch>    SEARCH   = new SectionInfo<SectionContentSearch, SectionContentSearch.SectionStateSearch>(
-            "search", SectionToolSearch.class, "business magnifying-glass-ps", SectionContentSearch.class );
-    public static final SectionInfo<SectionContentRecord, SectionContentRecord.SectionStateRecord>    RECORD   = new SectionInfo<SectionContentRecord, SectionContentRecord.SectionStateRecord>(
-            "record", SectionToolRecord.class, "people rocking-horse-sc44", SectionContentRecord.class );
-    public static final SectionInfo<SectionContentProfile, SectionContentProfile.SectionStateProfile> PROFILE  = new SectionInfo<SectionContentProfile, SectionContentProfile.SectionStateProfile>(
-            "profile", SectionToolProfile.class, "people hand-left1-ps", SectionContentProfile.class );
-    public static final SectionInfo<SectionContentSupport, SectionContentSupport.SectionStateSupport> SUPPORT  = new SectionInfo<SectionContentSupport, SectionContentSupport.SectionStateSupport>(
-            "support", SectionToolSupport.class, "people hat6-sc44", SectionContentSupport.class );
-    public static final ImmutableList<SectionInfo<?, ?>>                                              sections = ImmutableList.<SectionInfo<?, ?>>of(
-            ABOUT, SEARCH, RECORD, PROFILE, SUPPORT );
+    ABOUT(
+            "about", null, "alnum information3-sc49", //
+            SectionContentAbout.class, SectionContentAbout.SectionStateAbout.class ),
+    SEARCH(
+            "search", SectionToolSearch.class, "business magnifying-glass-ps", //
+            SectionContentSearch.class, SectionContentSearch.SectionStateSearch.class ),
+    RECORD(
+            "record", SectionToolRecord.class, "people rocking-horse-sc44",  //
+            SectionContentRecord.class, SectionContentRecord.SectionStateRecord.class ),
+    PROFILE(
+            "profile", SectionToolProfile.class, "people hand-left1-ps",  //
+            SectionContentProfile.class, SectionContentProfile.SectionStateProfile.class ),
+    SUPPORT(
+            "support", SectionToolSupport.class, "people hat6-sc44",  //
+            SectionContentSupport.class, SectionContentSupport.SectionStateSupport.class );
 
     static final Logger logger = Logger.get( SectionInfo.class );
 
     private final String                              id;
     private final Class<? extends WebMarkupContainer> toolPanel;
-    private final Class<P>                            contentPanelClass;
+    private final Class<? extends SectionContent>     contentPanelClass;
+    private final Class<? extends SectionState<?>>    stateClass;
     private final String                              toolItemSprite;
 
-    SectionInfo(final String id, final Class<? extends WebMarkupContainer> toolPanel, final String toolItemSprite,
-                final Class<P> contentPanelClass) {
+    <P extends SectionContent> SectionInfo(final String id, final Class<? extends WebMarkupContainer> toolPanel,
+                                           final String toolItemSprite, final Class<P> contentPanelClass,
+                                           final Class<? extends SectionState<P>> stateClass) {
 
         this.id = id;
         this.toolPanel = toolPanel;
         this.contentPanelClass = contentPanelClass;
         this.toolItemSprite = toolItemSprite;
+        this.stateClass = stateClass;
     }
 
     public String getId() {
@@ -96,8 +101,9 @@ public class SectionInfo<P extends SectionContent, S extends SectionState> imple
             };
 
         try {
-            WebMarkupContainer contentPanel = contentPanelClass.getConstructor( String.class ).newInstance( wicketId );
+            SectionContent contentPanel = contentPanelClass.getConstructor( String.class ).newInstance( wicketId );
             contentPanel.setMarkupId( String.format( "%s-content", getId() ) ).setOutputMarkupId( true );
+            SectionNavigationController.get().registerSection( this, contentPanel );
 
             return contentPanel;
         }
@@ -122,22 +128,53 @@ public class SectionInfo<P extends SectionContent, S extends SectionState> imple
 
     @NotNull
     @Override
-    public String getTabFragment() {
+    public String getFragment() {
 
         return getId();
     }
 
     @NotNull
     @Override
-    public S buildFragmentState(@NotNull final SectionContent panel) {
+    @SuppressWarnings({ "unchecked" })
+    public SectionState<SectionContent> newState(@NotNull final SectionContent panel) {
 
-        return null;
+        try {
+            return (SectionState<SectionContent>) stateClass.getConstructor( panel.getClass() ).newInstance( panel );
+        }
+        catch (InstantiationException e) {
+            throw logger.bug( e );
+        }
+        catch (IllegalAccessException e) {
+            throw logger.bug( e );
+        }
+        catch (InvocationTargetException e) {
+            throw Throw.propagate( e );
+        }
+        catch (NoSuchMethodException e) {
+            throw logger.bug( e );
+        }
     }
 
+    @NotNull
     @Override
-    public void applyFragmentState(@NotNull final SectionContent panel, @NotNull final SectionState state)
-            throws IncompatibleStateException {
+    @SuppressWarnings({ "unchecked" })
+    public SectionState<SectionContent> newState(@NotNull final String fragment) {
 
+        try {
+            return (SectionState<SectionContent>) stateClass.getConstructor( fragment.getClass() ).newInstance( fragment );
+        }
+        catch (InstantiationException e) {
+            throw logger.bug( e );
+        }
+        catch (IllegalAccessException e) {
+            throw logger.bug( e );
+        }
+        catch (InvocationTargetException e) {
+            throw Throw.propagate( e );
+        }
+        catch (NoSuchMethodException e) {
+            throw logger.bug( e );
+        }
     }
 
     @NotNull
@@ -149,21 +186,14 @@ public class SectionInfo<P extends SectionContent, S extends SectionState> imple
 
     @NotNull
     @Override
-    public Class<P> getContentPanelClass() {
+    public Class<? extends SectionContent> getContentPanelClass() {
 
         return contentPanelClass;
     }
 
     @Override
-    public boolean isInNavigation() {
+    public boolean shownInNavigation() {
 
-        return false;
-    }
-
-    @NotNull
-    @Override
-    public S getState(@NotNull final String fragment) {
-
-        return null;
+        return true;
     }
 }

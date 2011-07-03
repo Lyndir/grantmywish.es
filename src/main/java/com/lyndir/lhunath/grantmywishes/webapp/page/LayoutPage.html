@@ -53,6 +53,16 @@
         <header>
             <h1>grantmywish.es</h1>
             <nav>
+                <div class="user" wicket:id="user">
+                    <a href="#" wicket:id="loggedOut">Click to log in.</a>
+                    <form wicket:id="logIn">
+                        <input wicket:id="identifier" placeholder="Your e-mail address or user name" />
+                    </form>
+                    <a href="#" wicket:id="loggedIn">
+                        <span wicket:id="user">[username]</span>
+                        <span class="hoverShow">(click to log out)</span>
+                    </a>
+                </div>
                 <menu>
                     <li wicket:id="navMenu">
                         <a class="s32" wicket:id="toolItem" />

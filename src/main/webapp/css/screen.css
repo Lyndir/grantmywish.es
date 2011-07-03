@@ -211,6 +211,19 @@ header h1 {
 header h1 .sub {
     font-weight:                bold;
 }
+header nav .user {
+    position:                   absolute;
+
+    left:                       50%;
+    margin-left:                -500px;
+}
+header nav .user input {
+    background:                 white;
+    border:                     none;
+    outline:                    none;
+    width:                      20em;
+    padding:                    1ex;
+}
 header nav>menu {
     margin:                     0;
 }
@@ -307,4 +320,12 @@ header nav>menu>li>div>h2 {
 #content section>menu {
     position:                   absolute;
     bottom:                     0;
+}
+
+/* Utilities */
+.hoverShow {
+    display:                    none;
+}
+*:hover>.hoverShow {
+    display:                    inline-block;
 }

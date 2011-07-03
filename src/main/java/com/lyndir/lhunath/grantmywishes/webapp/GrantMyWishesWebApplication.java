@@ -2,7 +2,11 @@ package com.lyndir.lhunath.grantmywishes.webapp;
 
 import com.lyndir.lhunath.grantmywishes.webapp.listener.GrantMyWishesGuiceContext;
 import com.lyndir.lhunath.grantmywishes.webapp.page.LayoutPage;
-import org.apache.wicket.Page;
+import com.lyndir.lhunath.grantmywishes.webapp.section.SectionNavigationController;
+import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
+import com.lyndir.lhunath.opal.wayward.navigation.TabAjaxRequestListener;
+import org.apache.wicket.*;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.guice.InjectionFlagCachingGuiceComponentInjector;
 import org.apache.wicket.markup.*;
 import org.apache.wicket.markup.parser.filter.ExtendedOpenCloseTagExpander;
@@ -45,6 +49,25 @@ public class GrantMyWishesWebApplication extends WebApplication {
     public Class<? extends Page> getHomePage() {
 
         return LayoutPage.class;
+    }
+
+    @Override
+    public Session newSession(final Request request, final Response response) {
+
+        return new GrantMyWishesSession( request );
+    }
+
+    @Override
+    public AjaxRequestTarget newAjaxRequestTarget(final Page page) {
+
+        AjaxRequestTarget target = super.newAjaxRequestTarget( page );
+        AjaxHooks.installAjaxEvents( target );
+
+        target.addListener( TabAjaxRequestListener.of( SectionNavigationController.get() ) );
+//        if (page instanceof LayoutPage)
+//            ((LayoutPage) page).addMessages
+
+        return target;
     }
 
     public static GrantMyWishesWebApplication get() {

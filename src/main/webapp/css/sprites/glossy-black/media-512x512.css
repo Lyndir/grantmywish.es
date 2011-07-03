@@ -1,0 +1,76 @@
+.s512.media                      {
+    background-image: url("512x512/media.png");
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: inline-block;
+    padding: 64px 0 0 512px;
+    height: 512px;
+    font-size: 384px;
+}
+.s512.media.a-media21-arrow-back { background-position:   -0px   -0px; }
+.s512.media.a-media22-arrow-forward1 { background-position:   -0px -512px; }
+.s512.media.a-media23-arrows-seek-back { background-position:   -0px -1024px; }
+.s512.media.a-media24-arrows-seek-forward { background-position:   -0px -1536px; }
+.s512.media.a-media25-arrows-skip-back { background-position:   -0px -2048px; }
+.s512.media.a-media26-arrows-skip-forward { background-position:   -0px -2560px; }
+.s512.media.a-media27-pause-sign { background-position:   -0px -3072px; }
+.s512.media.a-media28-stop       { background-position:   -0px -3584px; }
+.s512.media.a-media29-record     { background-position:   -0px -4096px; }
+.s512.media.a-media291-volume1   { background-position:   -0px -4608px; }
+.s512.media.a-media292-minus3    { background-position:   -0px -5120px; }
+.s512.media.a-media292-speaker-volume-right { background-position:   -0px -5632px; }
+.s512.media.a-media293-speaker-volume-left { background-position:   -0px -6144px; }
+.s512.media.a-media31-back       { background-position:   -0px -6656px; }
+.s512.media.a-media32-forward    { background-position:   -0px -7168px; }
+.s512.media.a-media33-down       { background-position:   -0px -7680px; }
+.s512.media.a-media34-up         { background-position:   -0px -8192px; }
+.s512.media.a-media35-add        { background-position:   -0px -8704px; }
+.s512.media.a-media36-delete     { background-position:   -0px -9216px; }
+.s512.media.cd-load              { background-position:   -0px -9728px; }
+.s512.media.cd-refresh           { background-position:   -0px -10240px; }
+.s512.media.cd-sc52              { background-position:   -0px -10752px; }
+.s512.media.horn-sc48            { background-position:   -0px -11264px; }
+.s512.media.ipod1                { background-position:   -0px -11776px; }
+.s512.media.ipod2                { background-position:   -0px -12288px; }
+.s512.media.ipod3                { background-position:   -0px -12800px; }
+.s512.media.loud-speaker         { background-position:   -0px -13312px; }
+.s512.media.loud-speaker1-ps     { background-position:   -0px -13824px; }
+.s512.media.loudspeaker1         { background-position:   -0px -14336px; }
+.s512.media.media2-arrow-down    { background-position:   -0px -14848px; }
+.s512.media.media2-arrow-up      { background-position:   -0px -15360px; }
+.s512.media.music-accordian      { background-position:   -0px -15872px; }
+.s512.media.music-clarinet       { background-position:   -0px -16384px; }
+.s512.media.music-cleft          { background-position:   -0px -16896px; }
+.s512.media.music-drum           { background-position:   -0px -17408px; }
+.s512.media.music-drum1-sc44     { background-position:   -0px -17920px; }
+.s512.media.music-drum1          { background-position:   -0px -18432px; }
+.s512.media.music-eighth-note    { background-position:   -0px -18944px; }
+.s512.media.music-eighth-notes   { background-position:   -0px -19456px; }
+.s512.media.music-guitar         { background-position:   -0px -19968px; }
+.s512.media.music-guitar1        { background-position:   -0px -20480px; }
+.s512.media.music-guitar3-sc44   { background-position:   -0px -20992px; }
+.s512.media.music-harp1          { background-position:   -0px -21504px; }
+.s512.media.music-harp2          { background-position:   -0px -22016px; }
+.s512.media.music-microphone     { background-position:   -0px -22528px; }
+.s512.media.music-off-ps         { background-position:   -0px -23040px; }
+.s512.media.music-on-ps          { background-position:   -0px -23552px; }
+.s512.media.music-organ          { background-position:   -0px -24064px; }
+.s512.media.music-piano-keys     { background-position:   -0px -24576px; }
+.s512.media.music-piano1-sc43    { background-position:   -0px -25088px; }
+.s512.media.music-piano2-sc52    { background-position:   -0px -25600px; }
+.s512.media.music-sax4           { background-position:   -0px -26112px; }
+.s512.media.music-sixteenth-note { background-position:   -0px -26624px; }
+.s512.media.music-speaker        { background-position:   -0px -27136px; }
+.s512.media.music-speaker1       { background-position:   -0px -27648px; }
+.s512.media.music-tamborine      { background-position:   -0px -28160px; }
+.s512.media.music-trumpet-sc44-2 { background-position:   -0px -28672px; }
+.s512.media.music-trumpet-sc44   { background-position:   -0px -29184px; }
+.s512.media.music-trumpet1       { background-position:   -0px -29696px; }
+.s512.media.music-tuba           { background-position:   -0px -30208px; }
+.s512.media.music-tuba1          { background-position:   -0px -30720px; }
+.s512.media.music-violin         { background-position:   -0px -31232px; }
+.s512.media.music-violin1-sc44   { background-position:   -0px -31744px; }
+.s512.media.music-violin2        { background-position:   -0px -32256px; }
+.s512.media.speaker-sc52         { background-position:   -0px -32768px; }
+.s512.media.tape-reel1           { background-position:   -0px -33280px; }
+.s512.media.tape-reel2           { background-position:   -0px -33792px; }

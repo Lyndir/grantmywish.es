@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
-import com.lyndir.lhunath.opal.wayward.navigation.FragmentState;
+import com.lyndir.lhunath.opal.wayward.navigation.TabState;
 
 
 /**
@@ -8,6 +8,6 @@ import com.lyndir.lhunath.opal.wayward.navigation.FragmentState;
  *
  * @author lhunath
  */
-public interface SectionState extends FragmentState {
+public abstract class SectionState<P extends SectionContent> implements TabState<P> {
 
 }

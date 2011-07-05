@@ -14,37 +14,17 @@
         <link rel="stylesheet" type="text/css" href="css/screen.css" />
 
         <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+        <script src="js/functions.js" type="text/javascript"></script>
         <script type="text/javascript">
-            var windowHash = window.location.hash;
-            var foundCurrent, contentElement;
-
-            function hashChanged() {
-                foundCurrent = false;
-                contentElement = $(windowHash + "-content");
-                if (contentElement.size() != 1)
-                    contentElement = $("#about-content");
-
-                $("#content section").each(function (i) {
-                    if (foundCurrent)
-                        this.className = "future";
-                    else {
-                        if (this.id == contentElement.attr("id")) {
-                            foundCurrent = true;
-                            this.className = "current";
-                        } else
-                            this.className = "past";
-                    }
-                });
-            }
-
             $(document).ready(function() {
-                hashChanged();
-                window.setInterval(function () {
-                    if (window.location.hash != windowHash) {
-                        windowHash = window.location.hash;
-                        hashChanged();
-                    }
-                }, 100);
+                // Show element in fragment.
+                checkHashChanged();
+                AjaxHooks.registerPostAjax(checkHashChanged);
+
+                // Focus navigation's input field.
+                $("menu li").hover(function() {
+                    $(this).find("input:first").putCursorAtEnd();
+                });
             });
         </script>
     </head>

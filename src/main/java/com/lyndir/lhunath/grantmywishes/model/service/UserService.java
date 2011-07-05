@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.model.service;
 
+import com.lyndir.lhunath.grantmywishes.data.Profile;
 import com.lyndir.lhunath.grantmywishes.data.User;
 import com.lyndir.lhunath.grantmywishes.error.NoSuchUserException;
 import org.jetbrains.annotations.NotNull;
@@ -18,4 +19,6 @@ public interface UserService {
 
     @NotNull
     User newUser(@NotNull String userName);
+
+    Profile getProfile(User user);
 }

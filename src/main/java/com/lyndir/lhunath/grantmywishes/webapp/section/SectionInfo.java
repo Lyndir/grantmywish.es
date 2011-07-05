@@ -28,7 +28,7 @@ public enum SectionInfo implements TabDescriptor<SectionContent, SectionState<Se
             SectionContentRecord.class, SectionContentRecord.SectionStateRecord.class ),
     PROFILE(
             "profile", SectionToolProfile.class, "people hand-left1-ps",  //
-            SectionContentProfile.class, SectionContentProfile.SectionStateProfile.class ),
+            SectionContentUser.class, SectionContentUser.SectionStateProfile.class ),
     SUPPORT(
             "support", SectionToolSupport.class, "people hat6-sc44",  //
             SectionContentSupport.class, SectionContentSupport.SectionStateSupport.class );

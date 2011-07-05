@@ -3,6 +3,8 @@ package com.lyndir.lhunath.grantmywishes.webapp;
 import com.lyndir.lhunath.grantmywishes.webapp.listener.GrantMyWishesGuiceContext;
 import com.lyndir.lhunath.grantmywishes.webapp.page.LayoutPage;
 import com.lyndir.lhunath.grantmywishes.webapp.section.SectionNavigationController;
+import com.lyndir.lhunath.opal.wayward.i18n.Localized;
+import com.lyndir.lhunath.opal.wayward.i18n.LocalizedConverter;
 import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.opal.wayward.navigation.TabAjaxRequestListener;
 import org.apache.wicket.*;
@@ -12,6 +14,7 @@ import org.apache.wicket.markup.*;
 import org.apache.wicket.markup.parser.filter.ExtendedOpenCloseTagExpander;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.settings.IExceptionSettings;
+import org.apache.wicket.util.convert.ConverterLocator;
 
 
 /**
@@ -34,7 +37,7 @@ public class GrantMyWishesWebApplication extends WebApplication {
                     @Override
                     public MarkupParser newMarkupParser(final MarkupResourceStream resource) {
 
-                        MarkupParser markupParser = super.newMarkupParser(resource);
+                        MarkupParser markupParser = super.newMarkupParser( resource );
                         markupParser.appendMarkupFilter( new ExtendedOpenCloseTagExpander() );
 
                         return markupParser;
@@ -58,14 +61,23 @@ public class GrantMyWishesWebApplication extends WebApplication {
     }
 
     @Override
+    protected IConverterLocator newConverterLocator() {
+
+        ConverterLocator converterLocator = new ConverterLocator();
+        converterLocator.set( Localized.class, new LocalizedConverter() );
+
+        return converterLocator;
+    }
+
+    @Override
     public AjaxRequestTarget newAjaxRequestTarget(final Page page) {
 
         AjaxRequestTarget target = super.newAjaxRequestTarget( page );
         AjaxHooks.installAjaxEvents( target );
 
         target.addListener( TabAjaxRequestListener.of( SectionNavigationController.get() ) );
-//        if (page instanceof LayoutPage)
-//            ((LayoutPage) page).addMessages
+        //        if (page instanceof LayoutPage)
+        //            ((LayoutPage) page).addMessages
 
         return target;
     }

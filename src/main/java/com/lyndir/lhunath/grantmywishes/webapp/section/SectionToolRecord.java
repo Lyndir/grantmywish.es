@@ -9,6 +9,6 @@ public class SectionToolRecord extends SectionTool {
 
     public SectionToolRecord(final String id) {
 
-        super( id );
+        super( id, content );
     }
 }

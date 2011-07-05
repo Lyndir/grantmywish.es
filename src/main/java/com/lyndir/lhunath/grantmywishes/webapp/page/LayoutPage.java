@@ -121,6 +121,7 @@ public class LayoutPage extends WebPage {
                                             user = userService.authenticate( identifier.getObject() );
                                         }
                                         catch (NoSuchUserException e) {
+                                            error( e.getLocalizedMessage() );
                                             // TODO: Should be a separate process
                                             user = userService.newUser( identifier.getObject() );
                                         }

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/sprites/glossy-black/sprites.css" />
+        <link rel="stylesheet" type="text/css" href="css/sprites/silk/sprites.css" />
+        <link rel="stylesheet" type="text/css" href="css/screen.css" />
+    </head>
+
+    <body>
+        <wicket:panel>
+            <wicket:enclosure child="query">
+                <h1><wicket:message key="queryDescription"><q wicket:id="query" /></wicket:message></h1>
+            </wicket:enclosure>
+
+            <dl>
+                <wicket:container wicket:id="profile">
+                    <dt>Profile</dt>
+
+                    <dd wicket:id="entry">
+                        <label wicket:id="label" />
+                        <input wicket:id="value" type="text" />
+                    </dd>
+                </wicket:container>
+            </dl>
+        </wicket:panel>
+    </body>
+
+</html>

@@ -8,10 +8,19 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public abstract class SectionTool extends Panel {
+public abstract class SectionTool<C extends SectionContent> extends Panel {
 
-    SectionTool(final String id) {
+    private final C content;
+
+    SectionTool(final String id, final C content) {
 
         super( id );
+
+        this.content = content;
+    }
+
+    public C getContent() {
+
+        return content;
     }
 }

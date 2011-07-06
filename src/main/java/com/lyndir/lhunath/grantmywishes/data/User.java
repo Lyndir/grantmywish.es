@@ -1,8 +1,9 @@
 package com.lyndir.lhunath.grantmywishes.data;
 
 import com.google.common.collect.Lists;
+import com.lyndir.lhunath.opal.security.Subject;
+import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
-import java.io.Serializable;
 import java.util.List;
 
 
@@ -11,7 +12,9 @@ import java.util.List;
  *
  * @author lhunath
  */
-public class User extends MetaObject implements Serializable {
+public class User extends MetaObject implements Subject {
+
+    static final Messages msgs = MessagesFactory.create( Messages.class );
 
     private String name;
     private String email;
@@ -46,5 +49,24 @@ public class User extends MetaObject implements Serializable {
     public List<WishList> getWishLists() {
 
         return wishLists;
+    }
+
+    @Override
+    public String getLocalizedType() {
+
+        return msgs.type();
+    }
+
+    @Override
+    public String getLocalizedInstance() {
+
+        return msgs.instance( getName(), getEmail() );
+    }
+
+    interface Messages {
+
+        String type();
+
+        String instance(String name, String email);
     }
 }

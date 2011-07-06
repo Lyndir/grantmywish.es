@@ -5,6 +5,7 @@ import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import com.lyndir.lhunath.grantmywishes.data.Profile;
 import com.lyndir.lhunath.grantmywishes.data.User;
 import com.lyndir.lhunath.grantmywishes.data.service.UserDAO;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
@@ -51,5 +52,22 @@ public class UserDAOImpl implements UserDAO {
                 } );
 
         return Iterables.getOnlyElement( results, null );
+    }
+
+    @NotNull
+    @Override
+    public Profile getProfile(@NotNull final User user) {
+
+        ObjectSet<Profile> results = db.query(
+                new Predicate<Profile>() {
+
+                    @Override
+                    public boolean match(final Profile candidate) {
+
+                        return ObjectUtils.isEqual( user, candidate.getOwner() );
+                    }
+                } );
+
+        return Iterables.getOnlyElement( results );
     }
 }

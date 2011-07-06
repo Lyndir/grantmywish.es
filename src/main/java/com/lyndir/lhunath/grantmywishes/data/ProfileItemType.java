@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.data;
 
-import com.lyndir.lhunath.opal.wayward.i18n.*;
+import com.lyndir.lhunath.opal.system.i18n.*;
 
 
 /**
@@ -10,7 +10,8 @@ import com.lyndir.lhunath.opal.wayward.i18n.*;
  */
 public enum ProfileItemType implements Localized {
 
-    GIVEN_NAME;
+    GIVEN_NAME,
+    FAMILY_NAME;
 
     static final Messages msgs = MessagesFactory.create( Messages.class );
 

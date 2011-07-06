@@ -1,10 +1,11 @@
 package com.lyndir.lhunath.grantmywishes.model.service.impl;
 
 import com.google.inject.Inject;
-import com.lyndir.lhunath.grantmywishes.data.User;
+import com.lyndir.lhunath.grantmywishes.data.*;
 import com.lyndir.lhunath.grantmywishes.data.service.UserDAO;
-import com.lyndir.lhunath.grantmywishes.error.NoSuchUserException;
+import com.lyndir.lhunath.grantmywishes.error.*;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
+import com.lyndir.lhunath.opal.security.error.PermissionDeniedException;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -39,8 +40,19 @@ public class UserServiceImpl implements UserService {
 
     @NotNull
     @Override
-    public User newUser(@NotNull final String userName) {
+    public User newUser(@NotNull final String userName)
+            throws UserNameUnavailableException {
+
+        if (userDAO.findUser( userName ) != null)
+            throw new UserNameUnavailableException( userName );
 
         return userDAO.update( new User( userName ) );
+    }
+
+    @Override
+    public Profile getProfile(final User user)
+            throws PermissionDeniedException {
+
+        return userDAO.getProfile( user );
     }
 }

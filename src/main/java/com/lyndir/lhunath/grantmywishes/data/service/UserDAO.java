@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.data.service;
 
+import com.lyndir.lhunath.grantmywishes.data.Profile;
 import com.lyndir.lhunath.grantmywishes.data.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,4 +18,7 @@ public interface UserDAO {
 
     @Nullable
     User findUser(@Nullable String identifier);
+
+    @NotNull
+    Profile getProfile(@NotNull User user);
 }

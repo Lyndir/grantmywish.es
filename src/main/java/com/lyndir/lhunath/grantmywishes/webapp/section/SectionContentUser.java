@@ -5,7 +5,8 @@ import com.google.inject.Inject;
 import com.lyndir.lhunath.grantmywishes.data.ProfileItem;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesSession;
-import com.lyndir.lhunath.opal.wayward.i18n.MessagesFactory;
+import com.lyndir.lhunath.opal.security.error.PermissionDeniedException;
+import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
 import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
 import java.util.List;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -73,8 +74,14 @@ public class SectionContentUser extends SectionContent {
                                     @Override
                                     protected List<? extends ProfileItem> load() {
 
-                                        return ImmutableList.copyOf(
-                                                userService.getProfile( GrantMyWishesSession.get().getUser() ).getProfileItems() );
+                                        try {
+                                            return ImmutableList.copyOf(
+                                                    userService.getProfile( GrantMyWishesSession.get().getUser() ).getProfileItems() );
+                                        }
+                                        catch (PermissionDeniedException e) {
+                                            error( e.getLocalizedMessage() );
+                                            return null;
+                                        }
                                     }
                                 } ) {
                                     @Override

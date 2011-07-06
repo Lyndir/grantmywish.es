@@ -4,26 +4,26 @@ import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
 
 
 /**
- * <i>07 03, 2011</i>
+ * <i>07 05, 2011</i>
  *
  * @author lhunath
  */
-public class NoSuchUserException extends Exception {
+public class NoAccessException extends Exception {
 
     static final Messages msgs = MessagesFactory.create( Messages.class );
 
     private final String identifier;
 
     /**
-     * @param identifier The identifier that was used to search for a user.
+     * @param identifier The userName that is no longer available.
      */
-    public NoSuchUserException(final String identifier) {
+    public NoAccessException(final String identifier) {
 
         this.identifier = identifier;
     }
 
     /**
-     * @return The identifier that was used to search for a user.
+     * @return The identifier that was used to search for a user
      */
     public String getIdentifier() {
 

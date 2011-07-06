@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.lyndir.lhunath.grantmywishes.data.User;
 import com.lyndir.lhunath.grantmywishes.error.NoSuchUserException;
+import com.lyndir.lhunath.grantmywishes.error.UserNameUnavailableException;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesSession;
 import com.lyndir.lhunath.grantmywishes.webapp.section.SectionInfo;
@@ -120,10 +121,15 @@ public class LayoutPage extends WebPage {
                                         try {
                                             user = userService.authenticate( identifier.getObject() );
                                         }
-                                        catch (NoSuchUserException e) {
-                                            error( e.getLocalizedMessage() );
+                                        catch (NoSuchUserException ignored) {
                                             // TODO: Should be a separate process
-                                            user = userService.newUser( identifier.getObject() );
+                                            try {
+                                                user = userService.newUser( identifier.getObject() );
+                                            }
+                                            catch (UserNameUnavailableException ee) {
+                                                error( ee.getLocalizedMessage() );
+                                                return;
+                                            }
                                         }
 
                                         GrantMyWishesSession.get().setUser( user );

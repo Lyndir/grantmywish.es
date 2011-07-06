@@ -2,6 +2,6 @@
 
 <properties>
 
-    <entry key="message">No user found while searching for "{0}".</entry>
+    <entry key="message">User name "{0}" is unavailable.</entry>
 
 </properties>

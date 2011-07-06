@@ -2,6 +2,8 @@
 
 <properties>
 
-    <entry key="message">No user found while searching for "{0}".</entry>
+    <entry key="type">User Profile</entry>
+
+    <entry key="instance">Profile of {0}</entry>
 
 </properties>

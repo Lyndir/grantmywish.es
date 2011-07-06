@@ -3,7 +3,7 @@ package com.lyndir.lhunath.grantmywishes.webapp;
 import com.lyndir.lhunath.grantmywishes.webapp.listener.GrantMyWishesGuiceContext;
 import com.lyndir.lhunath.grantmywishes.webapp.page.LayoutPage;
 import com.lyndir.lhunath.grantmywishes.webapp.section.SectionNavigationController;
-import com.lyndir.lhunath.opal.wayward.i18n.Localized;
+import com.lyndir.lhunath.opal.system.i18n.Localized;
 import com.lyndir.lhunath.opal.wayward.i18n.LocalizedConverter;
 import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.opal.wayward.navigation.TabAjaxRequestListener;

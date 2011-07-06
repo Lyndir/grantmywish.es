@@ -1,7 +1,10 @@
 package com.lyndir.lhunath.grantmywishes.data;
 
 import com.google.common.collect.Lists;
-import com.lyndir.lhunath.opal.system.util.MetaObject;
+import com.lyndir.lhunath.grantmywishes.security.GGlobalSecureObject;
+import com.lyndir.lhunath.opal.security.*;
+import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,11 +13,15 @@ import java.util.List;
  *
  * @author lhunath
  */
-public class Profile extends MetaObject {
+public class Profile extends AbstractSecureObject<User, GlobalSecureObject<User>> {
 
-    private final List<ProfileItem> profileItems = Lists.newArrayListWithExpectedSize( ProfileItemType.values().length );
+    static final Messages msgs = MessagesFactory.create( Messages.class );
 
-    public Profile() {
+    private final ArrayList<ProfileItem> profileItems = Lists.newArrayListWithExpectedSize( ProfileItemType.values().length );
+
+    public Profile(final User user) {
+
+        super( user );
 
         for (final ProfileItemType profileItemType : ProfileItemType.values())
             profileItems.add( new ProfileItem( profileItemType ) );
@@ -23,5 +30,30 @@ public class Profile extends MetaObject {
     public List<ProfileItem> getProfileItems() {
 
         return profileItems;
+    }
+
+    @Override
+    public GlobalSecureObject<User> getParent() {
+
+        return GGlobalSecureObject.DEFAULT;
+    }
+
+    @Override
+    public String getLocalizedType() {
+
+        return msgs.type();
+    }
+
+    @Override
+    public String getLocalizedInstance() {
+
+        return msgs.instance( getOwner() );
+    }
+
+    interface Messages {
+
+        String type();
+
+        String instance(Subject owner);
     }
 }

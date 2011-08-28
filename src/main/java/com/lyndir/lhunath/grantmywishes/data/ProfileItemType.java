@@ -13,7 +13,7 @@ public enum ProfileItemType implements Localized {
     GIVEN_NAME,
     FAMILY_NAME;
 
-    static final Messages msgs = MessagesFactory.create( Messages.class );
+    static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
     @Override
     public String getLocalizedType() {

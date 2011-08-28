@@ -13,6 +13,9 @@
             <wicket:enclosure child="query">
                 <h1><wicket:message key="queryDescription"><q wicket:id="query" /></wicket:message></h1>
             </wicket:enclosure>
+            <h1 wicket:id="noQuery"><wicket:message key="noQuery" /></h1>
+
+            <h1 wicket:id="notLoggedIn"><wicket:message key="notLoggedIn" /></h1>
 
             <dl>
                 <wicket:container wicket:id="profile">
@@ -23,6 +26,32 @@
                         <input wicket:id="value" type="text" />
                     </dd>
                 </wicket:container>
+                <wicket:container wicket:id="wishes">
+                    <dt>Wishes</dt>
+
+                    <dd wicket:id="entry">
+                        <label wicket:id="label" />
+                        <input wicket:id="value" type="text" />
+                    </dd>
+                </wicket:container>
+                <div wicket:id="wishLists">
+                    <dt>Wish Lists</dt>
+
+                    <dd wicket:id="entry">
+                        <a wicket:id="link"><wicket:container wicket:id="label"></wicket:container></a>
+                    </dd>
+                    <wicket:enclosure child="newWishList">
+                        <dd>
+                            <a wicket:id="newWishList"><wicket:message key="newWishList" /></a>
+                        </dd>
+                    </wicket:enclosure>
+                    <wicket:enclosure child="newWishList.name">
+                        <dd>
+                            <label><wicket:message key="newWishList.name" /></label>
+                            <input wicket:id="newWishList.name" type="text" wicket:message="placeholder:newWishList.name.placeholder" />
+                        </dd>
+                    </wicket:enclosure>
+                </div>
             </dl>
         </wicket:panel>
     </body>

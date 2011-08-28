@@ -1,7 +1,8 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
-import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
-import org.jetbrains.annotations.NotNull;
+import com.google.common.collect.ImmutableList;
+import java.util.Deque;
+import java.util.List;
 
 
 /**
@@ -18,23 +19,24 @@ public class SectionContentAbout extends SectionContent {
 
     public static class SectionStateAbout extends SectionState<SectionContentAbout> {
 
-        public SectionStateAbout(final SectionContentAbout content) {
-
-        }
-
         public SectionStateAbout(final String fragment) {
 
+            super( fragment );
+        }
+
+        public SectionStateAbout(final SectionContentAbout panel) {
+
+            super( panel );
         }
 
         @Override
-        public String toFragment() {
+        protected List<String> loadFragments(final SectionContentAbout panel) {
 
-            return null;
+            return ImmutableList.of();
         }
 
         @Override
-        public void apply(@NotNull final SectionContentAbout panel)
-                throws IncompatibleStateException {
+        protected void applyFragments(final SectionContentAbout panel, final Deque<String> fragments) {
 
         }
     }

@@ -19,8 +19,8 @@ import com.db4o.ObjectContainer;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.lyndir.lhunath.grantmywishes.data.service.UserDAO;
-import com.lyndir.lhunath.grantmywishes.data.service.db4o.DB4OProvider;
-import com.lyndir.lhunath.grantmywishes.data.service.db4o.UserDAOImpl;
+import com.lyndir.lhunath.grantmywishes.data.service.WishDAO;
+import com.lyndir.lhunath.grantmywishes.data.service.db4o.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 
 
@@ -46,6 +46,7 @@ public class DAOModule extends AbstractModule {
         // Services
         logger.dbg( "Binding data services" );
         bind( UserDAO.class ).to( UserDAOImpl.class );
+        bind( WishDAO.class ).to( WishDAOImpl.class );
 
         // Database
         logger.dbg( "Binding persistence providers" );

@@ -18,8 +18,8 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 // Show element in fragment.
-                checkHashChanged();
-                AjaxHooks.registerPostAjax(checkHashChanged);
+                updateHash();
+                AjaxHooks.registerPostAjax(updateHash);
 
                 // Focus navigation's input field.
                 $("menu li").hover(function() {

@@ -7,8 +7,8 @@ package com.lyndir.lhunath.grantmywishes.webapp.section;
  */
 public class SectionToolSupport extends SectionTool<SectionContentSupport> {
 
-    public SectionToolSupport(final String id, final SectionContentSupport content) {
+    public SectionToolSupport(final String id) {
 
-        super( id, content );
+        super( id );
     }
 }

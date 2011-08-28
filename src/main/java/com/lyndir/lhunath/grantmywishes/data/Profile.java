@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.lyndir.lhunath.grantmywishes.security.GGlobalSecureObject;
 import com.lyndir.lhunath.opal.security.*;
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,9 +14,9 @@ import java.util.List;
  */
 public class Profile extends AbstractSecureObject<User, GlobalSecureObject<User>> {
 
-    static final Messages msgs = MessagesFactory.create( Messages.class );
+    static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
-    private final ArrayList<ProfileItem> profileItems = Lists.newArrayListWithExpectedSize( ProfileItemType.values().length );
+    private final List<ProfileItem> profileItems = Lists.newArrayListWithExpectedSize( ProfileItemType.values().length );
 
     public Profile(final User user) {
 

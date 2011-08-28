@@ -1,0 +1,25 @@
+<configuration scan="true">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%-8relative %22c{0} [%-5level] %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.lyndir" level="TRACE" />
+    <logger name="net.lin-k" level="INFO" />
+    <logger name="org.opensaml" level="WARN" />
+    <logger name="org.jets3t.service.impl" level="OFF" />
+
+    <!--
+    <logger name="org.apache.wicket" level="DEBUG" />
+    -->
+    <logger name="com.lyndir.lhunath.opal.security.service.impl.SecurityServiceImpl" level="INFO" />
+    <logger name="com.lyndir.lhunath.opal.system.i18n.MessagesFactory" level="INFO" />
+    <logger name="com.lyndir.lhunath.opal.system.i18n.internal" level="INFO" />
+
+    <root level="WARN">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

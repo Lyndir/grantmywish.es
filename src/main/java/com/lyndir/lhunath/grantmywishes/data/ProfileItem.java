@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.data;
 
+import com.lyndir.lhunath.opal.system.i18n.*;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 
 
@@ -8,7 +9,9 @@ import com.lyndir.lhunath.opal.system.util.MetaObject;
  *
  * @author lhunath
  */
-public class ProfileItem extends MetaObject {
+public class ProfileItem extends MetaObject implements Localized {
+
+    static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
     private final ProfileItemType type;
     private String value;
@@ -31,5 +34,24 @@ public class ProfileItem extends MetaObject {
     public void setValue(final String value) {
 
         this.value = value;
+    }
+
+    @Override
+    public String getLocalizedType() {
+
+        return msgs.type();
+    }
+
+    @Override
+    public String getLocalizedInstance() {
+
+        return msgs.instance( getType(), value );
+    }
+
+    interface Messages {
+
+        String type();
+
+        String instance(ProfileItemType type, String value);
     }
 }

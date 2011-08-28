@@ -6,6 +6,7 @@ import com.lyndir.lhunath.grantmywishes.data.service.UserDAO;
 import com.lyndir.lhunath.grantmywishes.error.*;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
 import com.lyndir.lhunath.opal.security.error.PermissionDeniedException;
+import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -46,13 +47,49 @@ public class UserServiceImpl implements UserService {
         if (userDAO.findUser( userName ) != null)
             throw new UserNameUnavailableException( userName );
 
-        return userDAO.update( new User( userName ) );
+        return userDAO.update( new Profile( new User( userName ) ) ).getOwner();
+    }
+
+    @NotNull
+    @Override
+    public User getUser(@NotNull final String userName) {
+
+        // TODO: Permission denied if null.
+        return userDAO.findUser( userName );
+    }
+
+    @NotNull
+    @Override
+    public WishList newWishList(@NotNull final String name, final Profile profile) {
+
+        return userDAO.update( new WishList( name, profile ) );
+    }
+
+    @NotNull
+    @Override
+    public WishList getWishList(@NotNull final User owner, @NotNull final String name) {
+
+        // TODO: Permission denied if null.
+        return userDAO.findWishList(owner, name);
     }
 
     @Override
-    public Profile getProfile(final User user)
+    public Profile getProfile(@NotNull final User user)
             throws PermissionDeniedException {
 
         return userDAO.getProfile( user );
+    }
+
+    @Override
+    public SizedIterator<WishList> getWishLists(@NotNull final User user)
+            throws PermissionDeniedException {
+
+        return userDAO.getWishLists( user );
+    }
+
+    @Override
+    public void save(@NotNull final Profile profile) {
+
+        userDAO.update( profile );
     }
 }

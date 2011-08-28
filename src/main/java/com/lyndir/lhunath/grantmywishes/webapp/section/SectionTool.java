@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
+import com.lyndir.lhunath.grantmywishes.webapp.page.LayoutPage;
 import org.apache.wicket.markup.html.panel.Panel;
 
 
@@ -10,17 +11,13 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public abstract class SectionTool<C extends SectionContent> extends Panel {
 
-    private final C content;
-
-    SectionTool(final String id, final C content) {
+    SectionTool(final String id) {
 
         super( id );
-
-        this.content = content;
     }
 
     public C getContent() {
 
-        return content;
+        return ((LayoutPage) getPage()).getContent( this );
     }
 }

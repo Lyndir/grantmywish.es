@@ -17,7 +17,9 @@ package com.lyndir.lhunath.grantmywishes.model;
 
 import com.google.inject.AbstractModule;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
+import com.lyndir.lhunath.grantmywishes.model.service.WishService;
 import com.lyndir.lhunath.grantmywishes.model.service.impl.UserServiceImpl;
+import com.lyndir.lhunath.grantmywishes.model.service.impl.WishServiceImpl;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 
 
@@ -43,5 +45,6 @@ public class ServiceModule extends AbstractModule {
         // Services
         logger.dbg( "Binding services" );
         bind( UserService.class ).to( UserServiceImpl.class );
+        bind( WishService.class ).to( WishServiceImpl.class );
     }
 }

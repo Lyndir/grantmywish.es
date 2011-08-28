@@ -1,18 +1,21 @@
 package com.lyndir.lhunath.grantmywishes.webapp.page;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.lyndir.lhunath.grantmywishes.data.User;
 import com.lyndir.lhunath.grantmywishes.error.NoSuchUserException;
 import com.lyndir.lhunath.grantmywishes.error.UserNameUnavailableException;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesSession;
-import com.lyndir.lhunath.grantmywishes.webapp.section.SectionInfo;
-import com.lyndir.lhunath.grantmywishes.webapp.section.SectionNavigationController;
+import com.lyndir.lhunath.grantmywishes.webapp.section.*;
+import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.wayward.behavior.CSSClassAttributeAppender;
 import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
-import com.lyndir.lhunath.opal.wayward.navigation.TabPageListener;
-import java.util.List;
+import com.lyndir.lhunath.opal.wayward.navigation.NavigationPageListener;
+import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -35,14 +38,11 @@ import org.apache.wicket.model.*;
  */
 public class LayoutPage extends WebPage {
 
-    private final IModel<?>                           pageTitle = Model.of( "grantmywish.es" );
-    private final IModel<? extends List<SectionInfo>> sections  = new LoadableDetachableModel<List<SectionInfo>>() {
-        @Override
-        protected List<SectionInfo> load() {
+    static final Logger logger = Logger.get( LayoutPage.class );
 
-            return ImmutableList.copyOf( SectionInfo.values() );
-        }
-    };
+    private final IModel<?>                        pageTitle       = Model.of( "grantmywish.es" );
+    private final Map<SectionInfo, SectionTool<?>> sectionTools    = Maps.newHashMapWithExpectedSize( SectionInfo.values().size() );
+    private final Map<SectionInfo, SectionContent> sectionContents = Maps.newHashMapWithExpectedSize( SectionInfo.values().size() );
 
     @Inject
     UserService userService;
@@ -53,7 +53,12 @@ public class LayoutPage extends WebPage {
         super.onInitialize();
 
         AjaxHooks.installAjaxEvents( this );
-        AjaxHooks.installPageEvents( this, TabPageListener.of( SectionNavigationController.get() ) );
+        AjaxHooks.installPageEvents( this, NavigationPageListener.of( SectionNavigationController.get() ) );
+
+        for (final SectionInfo sectionInfo : SectionInfo.values())
+            sectionTools.put( sectionInfo, sectionInfo.getToolPanel( "toolPanel" ) );
+        for (final SectionInfo sectionInfo : SectionInfo.values())
+            sectionContents.put( sectionInfo, sectionInfo.getContentPanel( "contentPanel" ) );
 
         add( new Label( "pageTitle", pageTitle ) );
         //        add(
@@ -156,7 +161,7 @@ public class LayoutPage extends WebPage {
                                                     @Override
                                                     protected String load() {
 
-                                                        return GrantMyWishesSession.get().getUser().getName();
+                                                        return checkNotNull( GrantMyWishesSession.get().getUser() ).getName();
                                                     }
                                                 } ) );
                                     }
@@ -172,7 +177,7 @@ public class LayoutPage extends WebPage {
                     }
                 }.setOutputMarkupId( true ) );
         add(
-                new ListView<SectionInfo>( "navMenu", sections ) {
+                new ListView<SectionInfo>( "navMenu", ImmutableList.copyOf( SectionInfo.values() ) ) {
                     @Override
                     protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
 
@@ -186,18 +191,26 @@ public class LayoutPage extends WebPage {
                                         SectionNavigationController.get().activateNewTab( sectionInfo );
                                     }
                                 }.add( new CSSClassAttributeAppender( sectionInfo.getToolItemSprite() ) ) );
-                        sectionInfoListItem.add( sectionInfo.getToolPanel( "toolPanel" ) );
+                        sectionInfoListItem.add( sectionTools.get( sectionInfoListItem.getModelObject() ) );
                     }
                 } );
         add(
-                new ListView<SectionInfo>( "sections", sections ) {
+                new ListView<SectionInfo>( "sections", ImmutableList.copyOf( SectionInfo.values() ) ) {
                     @Override
                     protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
 
-                        SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
-
-                        sectionInfoListItem.add( sectionInfo.getContentPanel( "contentPanel" ) );
+                        sectionInfoListItem.add( sectionContents.get( sectionInfoListItem.getModelObject() ) );
                     }
                 } );
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    public <C extends SectionContent> C getContent(final SectionTool<C> sectionTool) {
+
+        for (final Map.Entry<SectionInfo, SectionTool<?>> sectionToolEntry : sectionTools.entrySet())
+            if (sectionToolEntry.getValue() == sectionTool)
+                return (C) sectionContents.get( sectionToolEntry.getKey() );
+
+        throw logger.bug( "Tried to look up content in page for section tool: %s, but this tool does not exist in the page.", sectionTool );
     }
 }

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public class SectionNavigationController extends TabController {
+public class SectionNavigationController extends NavigationController {
 
     private static final SectionNavigationController instance = new SectionNavigationController();
     private static final WeakHashMap<Session, Map<SectionInfo, Panel>> tabToPanel = new WeakHashMap<Session, Map<SectionInfo, Panel>>();
@@ -45,7 +45,7 @@ public class SectionNavigationController extends TabController {
     @Override
     protected Iterable<? extends TabDescriptor<SectionContent, SectionState<SectionContent>>> getTabs() {
 
-        return ImmutableList.copyOf( SectionInfo.values() );
+        return SectionInfo.values();
     }
 
     @NotNull

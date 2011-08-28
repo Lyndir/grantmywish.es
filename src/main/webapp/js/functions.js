@@ -39,10 +39,10 @@
 
 
 // Show the content element referenced by the document's hash
-var documentHash;
-function hashChanged() {
+function updateHash() {
+    var hashContent = document.location.hash.split('/', 1)[0];
     var foundCurrent = false;
-    var contentElement = $(documentHash + "-content");
+    var contentElement = $(hashContent + "-content");
     if (contentElement.size() != 1)
         contentElement = $("#about-content");
 
@@ -57,11 +57,5 @@ function hashChanged() {
                 this.className = "past";
         }
     });
-}
-function checkHashChanged() {
-    if (document.location.hash != documentHash) {
-        documentHash = document.location.hash;
-        hashChanged();
-    }
 }
 

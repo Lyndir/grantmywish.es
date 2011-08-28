@@ -1,10 +1,8 @@
 package com.lyndir.lhunath.grantmywishes.data;
 
-import com.google.common.collect.Lists;
 import com.lyndir.lhunath.opal.security.Subject;
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
-import java.util.List;
 
 
 /**
@@ -14,12 +12,10 @@ import java.util.List;
  */
 public class User extends MetaObject implements Subject {
 
-    static final Messages msgs = MessagesFactory.create( Messages.class );
+    static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
     private String name;
     private String email;
-
-    private final List<WishList> wishLists = Lists.newLinkedList();
 
     public User(final String name) {
 
@@ -44,11 +40,6 @@ public class User extends MetaObject implements Subject {
     public void setEmail(final String email) {
 
         this.email = email;
-    }
-
-    public List<WishList> getWishLists() {
-
-        return wishLists;
     }
 
     @Override

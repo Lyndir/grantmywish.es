@@ -6,13 +6,14 @@ import com.lyndir.lhunath.grantmywishes.webapp.section.SectionNavigationControll
 import com.lyndir.lhunath.opal.system.i18n.Localized;
 import com.lyndir.lhunath.opal.wayward.i18n.LocalizedConverter;
 import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
-import com.lyndir.lhunath.opal.wayward.navigation.TabAjaxRequestListener;
+import com.lyndir.lhunath.opal.wayward.navigation.NavigationAjaxRequestListener;
 import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.guice.InjectionFlagCachingGuiceComponentInjector;
 import org.apache.wicket.markup.*;
 import org.apache.wicket.markup.parser.filter.ExtendedOpenCloseTagExpander;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.convert.ConverterLocator;
 
@@ -46,6 +47,8 @@ public class GrantMyWishesWebApplication extends WebApplication {
         getMarkupSettings().setDefaultMarkupEncoding( "UTF-8" );
 
         addComponentInstantiationListener( new InjectionFlagCachingGuiceComponentInjector( this, GrantMyWishesGuiceContext.get() ) );
+
+        mount( new HybridUrlCodingStrategy( "/page", getHomePage() ) );
     }
 
     @Override
@@ -75,7 +78,7 @@ public class GrantMyWishesWebApplication extends WebApplication {
         AjaxRequestTarget target = super.newAjaxRequestTarget( page );
         AjaxHooks.installAjaxEvents( target );
 
-        target.addListener( TabAjaxRequestListener.of( SectionNavigationController.get() ) );
+        target.addListener( NavigationAjaxRequestListener.of( SectionNavigationController.get() ) );
         //        if (page instanceof LayoutPage)
         //            ((LayoutPage) page).addMessages
 

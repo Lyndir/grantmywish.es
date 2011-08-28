@@ -5,9 +5,9 @@ package com.lyndir.lhunath.grantmywishes.webapp.section;
  *
  * @author lhunath
  */
-public class SectionToolSearch extends SectionTool<SectionContentSearch> {
+public class SectionToolWishes extends SectionTool<SectionContentWishes> {
 
-    public SectionToolSearch(final String id) {
+    public SectionToolWishes(final String id) {
 
         super( id );
     }

@@ -1,7 +1,7 @@
 package com.lyndir.lhunath.grantmywishes.data.service;
 
-import com.lyndir.lhunath.grantmywishes.data.Profile;
-import com.lyndir.lhunath.grantmywishes.data.User;
+import com.lyndir.lhunath.grantmywishes.data.*;
+import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,11 +14,20 @@ import org.jetbrains.annotations.Nullable;
 public interface UserDAO {
 
     @NotNull
-    User update(@NotNull User user);
+    Profile update(@NotNull Profile profile);
+
+    @NotNull
+    WishList update(@NotNull WishList wishList);
 
     @Nullable
     User findUser(@Nullable String identifier);
 
+    @Nullable
+    WishList findWishList(@NotNull User owner, @NotNull String name);
+
     @NotNull
     Profile getProfile(@NotNull User user);
+
+    @NotNull
+    SizedIterator<WishList> getWishLists(@NotNull User user);
 }

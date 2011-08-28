@@ -5,9 +5,9 @@ import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import com.lyndir.lhunath.grantmywishes.data.Profile;
-import com.lyndir.lhunath.grantmywishes.data.User;
+import com.lyndir.lhunath.grantmywishes.data.*;
 import com.lyndir.lhunath.grantmywishes.data.service.UserDAO;
+import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,11 +30,20 @@ public class UserDAOImpl implements UserDAO {
 
     @NotNull
     @Override
-    public User update(@NotNull final User user) {
+    public Profile update(@NotNull final Profile profile) {
 
-        db.store( user );
+        db.store( profile );
 
-        return user;
+        return profile;
+    }
+
+    @NotNull
+    @Override
+    public WishList update(@NotNull final WishList wishList) {
+
+        db.store( wishList );
+
+        return wishList;
     }
 
     @Override
@@ -48,6 +57,23 @@ public class UserDAOImpl implements UserDAO {
 
                         return ObjectUtils.isEqual( candidate.getName(), identifier ) //
                                || ObjectUtils.isEqual( candidate.getEmail(), identifier );
+                    }
+                } );
+
+        return Iterables.getOnlyElement( results, null );
+    }
+
+    @Override
+    public WishList findWishList(@NotNull final User owner, @NotNull final String name) {
+
+        ObjectSet<WishList> results = db.query(
+                new Predicate<WishList>() {
+
+                    @Override
+                    public boolean match(final WishList candidate) {
+
+                        return ObjectUtils.isEqual( candidate.getOwner(), owner ) //
+                               || ObjectUtils.isEqual( candidate.getName(), name );
                     }
                 } );
 
@@ -69,5 +95,22 @@ public class UserDAOImpl implements UserDAO {
                 } );
 
         return Iterables.getOnlyElement( results );
+    }
+
+    @NotNull
+    @Override
+    public SizedIterator<WishList> getWishLists(@NotNull final User user) {
+
+        ObjectSet<WishList> results = db.query(
+                new Predicate<WishList>() {
+
+                    @Override
+                    public boolean match(final WishList candidate) {
+
+                        return ObjectUtils.isEqual( user, candidate.getOwner() );
+                    }
+                } );
+
+        return SizedIterator.of( results );
     }
 }

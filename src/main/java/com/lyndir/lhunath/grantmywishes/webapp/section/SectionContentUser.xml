@@ -2,6 +2,12 @@
 
 <properties>
 
-    <entry key="queryDescription">Results for ${query}</entry>
+    <entry key="queryDescription">Results for ${query} in your stuff</entry>
+    <entry key="noQuery">Your stuff</entry>
+    <entry key="notLoggedIn">Log in to see your stuff</entry>
+
+    <entry key="newWishList">Create a new wish list</entry>
+    <entry key="newWishList.name">New wish list</entry>
+    <entry key="newWishList.name.placeholder">Enter the name of your new wish list</entry>
 
 </properties>

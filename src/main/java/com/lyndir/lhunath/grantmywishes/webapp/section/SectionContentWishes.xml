@@ -6,8 +6,8 @@
     <entry key="noQuery">Your stuff</entry>
     <entry key="notLoggedIn">Log in to see your stuff</entry>
 
-    <entry key="newWishList">Create a new wish list</entry>
-    <entry key="newWishList.name">New wish list</entry>
-    <entry key="newWishList.name.placeholder">Enter the name of your new wish list</entry>
+    <entry key="knownWishes">Known wishes</entry>
+    <entry key="newWish">Create a new wish</entry>
+    <entry key="wishList.name">Wish list: ${name}</entry>
 
 </properties>

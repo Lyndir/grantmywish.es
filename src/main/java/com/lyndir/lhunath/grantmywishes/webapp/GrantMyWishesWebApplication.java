@@ -16,6 +16,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.convert.ConverterLocator;
+import org.apache.wicket.util.convert.IConverter;
 
 
 /**
@@ -66,10 +67,18 @@ public class GrantMyWishesWebApplication extends WebApplication {
     @Override
     protected IConverterLocator newConverterLocator() {
 
-        ConverterLocator converterLocator = new ConverterLocator();
-        converterLocator.set( Localized.class, new LocalizedConverter() );
+        return new IConverterLocator() {
+            final ConverterLocator defaultConverter = new ConverterLocator();
 
-        return converterLocator;
+            @Override
+            public IConverter getConverter(final Class<?> type) {
+
+                if (Localized.class.isAssignableFrom( type ))
+                    return new LocalizedConverter();
+
+                return defaultConverter.getConverter( type );
+            }
+        };
     }
 
     @Override

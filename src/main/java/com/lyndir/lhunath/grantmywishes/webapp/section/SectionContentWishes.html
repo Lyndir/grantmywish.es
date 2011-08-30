@@ -10,24 +10,35 @@
 
     <body>
         <wicket:panel>
-            <h1>Results for <q>iphone</q></h1>
-            <dl>
-                <dt>Known wishes</dt>
-                <dd>
-                    <img width="200" src="http://cdn.cbsi.com.au/story_media/339303698/iphone4_1.jpg" />
+            <wicket:enclosure child="query">
+                <h1><wicket:message key="queryDescription"><q wicket:id="query" /></wicket:message></h1>
+            </wicket:enclosure>
 
-                    <h3>
-                        <mark>iPhone</mark>
-                        4, 32GB
-                    </h3>
+            <dl wicket:id="wishes">
+                <dt><wicket:message key="knownWishes" /></dt>
+                <dd wicket:id="entry">
+                    <img width="200" wicket:id="image" />
 
-                    <p>
-                        The iPhone 4 is a touchscreen smartphone developed by Apple. It is the fourth generation of iPhone, and
-                        successor to the iPhone 3GS. It is particularly marketed for video calling (marketed by Apple as FaceTime),
-                        consumption of media such as books and periodicals, movies, music, and games, and for general web and e-mail
-                        access. </p>
+                    <h3 wicket:id="name" />
+
+                    <wicket:container wicket:id="description" />
                 </dd>
-                <dt><a href="#">Create a new wish</a></dt>
+                <wicket:enclosure child="newWish">
+                    <dt>
+                        <a wicket:id="newWish"><wicket:message key="newWish" /></a>
+                    </dt>
+                </wicket:enclosure>
+            </dl>
+
+            <dl wicket:id="wishList">
+                <dt><wicket:message key="wishList.name"><q wicket:id="name" /></wicket:message></dt>
+                <dd wicket:id="wishes">
+                    <img width="200" wicket:id="image" />
+
+                    <h3 wicket:id="name" />
+
+                    <wicket:container wicket:id="description" />
+                </dd>
             </dl>
         </wicket:panel>
     </body>

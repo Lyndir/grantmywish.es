@@ -60,3 +60,8 @@
 @import url("symbols-512x512.css");
 @import url("transport-512x512.css");
 @import url("wonders-512x512.css");
+
+.s28.inline, .s32.inline, .s64.inline, .s512.inline {
+    height:                 1em;
+    padding-top:            0;
+}

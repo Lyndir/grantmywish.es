@@ -14,9 +14,10 @@ public class Wish implements Localized {
 
     static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
-    private final String name;
-    private       String description;
-    private       URL    store;
+    private String name;
+    private byte[] image;
+    private String description;
+    private URL    store;
 
     public Wish(final String name) {
 
@@ -26,6 +27,21 @@ public class Wish implements Localized {
     public String getName() {
 
         return name;
+    }
+
+    public void setName(final String name) {
+
+        this.name = name;
+    }
+
+    public byte[] getImage() {
+
+        return image;
+    }
+
+    public void setImage(final byte[] image) {
+
+        this.image = image;
     }
 
     public String getDescription() {

@@ -15,7 +15,6 @@ public class User extends MetaObject implements Subject {
     static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
     private String name;
-    private String email;
 
     public User(final String name) {
 
@@ -32,16 +31,6 @@ public class User extends MetaObject implements Subject {
         this.name = name;
     }
 
-    public String getEmail() {
-
-        return email;
-    }
-
-    public void setEmail(final String email) {
-
-        this.email = email;
-    }
-
     @Override
     public String getLocalizedType() {
 
@@ -51,13 +40,13 @@ public class User extends MetaObject implements Subject {
     @Override
     public String getLocalizedInstance() {
 
-        return msgs.instance( getName(), getEmail() );
+        return msgs.instance( getName() );
     }
 
     interface Messages {
 
         String type();
 
-        String instance(String name, String email);
+        String instance(String name);
     }
 }

@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -67,7 +68,7 @@ public class SectionInfo<P extends SectionContent, S extends SectionState<P>> im
     }
 
     private static <P extends SectionContent, S extends SectionState<P>> SectionInfo<P, S> of(final String id,
-                                                                                              final Class<? extends SectionTool<P>> toolPanel,
+                                                                                              @Nullable final Class<? extends SectionTool<P>> toolPanel,
                                                                                               final String toolItemSprite,
                                                                                               final Class<P> contentPanelClass,
                                                                                               final Class<S> stateClass) {

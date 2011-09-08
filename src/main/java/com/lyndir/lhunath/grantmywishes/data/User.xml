@@ -4,6 +4,6 @@
 
     <entry key="type">User</entry>
 
-    <entry key="instance"><![CDATA[{0} <{1}>]]></entry>
+    <entry key="instance"><![CDATA[{0}]]></entry>
 
 </properties>

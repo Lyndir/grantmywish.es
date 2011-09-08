@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.model.service.impl;
 
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 import com.lyndir.lhunath.grantmywishes.data.*;
 import com.lyndir.lhunath.grantmywishes.data.service.UserDAO;
@@ -58,6 +59,12 @@ public class UserServiceImpl implements UserService {
         return userDAO.findUser( userName );
     }
 
+    @Override
+    public SizedIterator<Profile> getProfiles(final Predicate<Profile> predicate) {
+
+        return userDAO.getProfiles(predicate);
+    }
+
     @NotNull
     @Override
     public WishList newWishList(@NotNull final String name, final Profile profile) {
@@ -82,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SizedIterator<WishList> getWishLists(@NotNull final User user)
-            throws PermissionDeniedException {
+             {
 
         return userDAO.getWishLists( user );
     }

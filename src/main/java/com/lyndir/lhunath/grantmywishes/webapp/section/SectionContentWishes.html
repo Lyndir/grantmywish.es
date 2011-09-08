@@ -10,36 +10,41 @@
 
     <body>
         <wicket:panel>
+
+            <h1 wicket:id="notLoggedIn"><wicket:message key="notLoggedIn" /></h1>
+
             <wicket:enclosure child="query">
                 <h1><wicket:message key="queryDescription"><q wicket:id="query" /></wicket:message></h1>
             </wicket:enclosure>
 
             <dl wicket:id="wishes">
                 <dt><wicket:message key="knownWishes" /></dt>
-                <dd wicket:id="entry">
+                <dd wicket:id="items">
                     <img width="200" wicket:id="image" />
 
                     <h3 wicket:id="name" />
 
                     <wicket:container wicket:id="description" />
                 </dd>
-                <wicket:enclosure child="newWish">
-                    <dt>
-                        <a wicket:id="newWish"><wicket:message key="newWish" /></a>
-                    </dt>
-                </wicket:enclosure>
             </dl>
 
             <dl wicket:id="wishList">
                 <dt><wicket:message key="wishList.name"><q wicket:id="name" /></wicket:message></dt>
-                <dd wicket:id="wishes">
+                <dd wicket:id="items">
                     <img width="200" wicket:id="image" />
 
                     <h3 wicket:id="name" />
 
-                    <wicket:container wicket:id="description" />
+                    <p wicket:id="description" />
                 </dd>
+                <wicket:enclosure child="newWish">
+                    <dd>
+                        <wicket:message key="info.newWish"> <span class="inline s28 people rocking-horse-sc44" wicket:id="newWish" />
+                        </wicket:message>
+                    </dd>
+                </wicket:enclosure>
             </dl>
+
         </wicket:panel>
     </body>
 

@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.model.service;
 
+import com.google.common.base.Predicate;
 import com.lyndir.lhunath.grantmywishes.data.*;
 import com.lyndir.lhunath.grantmywishes.error.NoSuchUserException;
 import com.lyndir.lhunath.grantmywishes.error.UserNameUnavailableException;
@@ -26,6 +27,8 @@ public interface UserService {
     @NotNull
     User getUser(@NotNull String userName);
 
+    SizedIterator<Profile> getProfiles(Predicate<Profile> predicate);
+
     @NotNull
     WishList newWishList(@NotNull String name, Profile profile);
 
@@ -35,8 +38,7 @@ public interface UserService {
     Profile getProfile(@NotNull User user)
             throws PermissionDeniedException;
 
-    SizedIterator<WishList> getWishLists(@NotNull User user)
-            throws PermissionDeniedException;
+    SizedIterator<WishList> getWishLists(@NotNull User user);
 
     void save(@NotNull Profile profile);
 }

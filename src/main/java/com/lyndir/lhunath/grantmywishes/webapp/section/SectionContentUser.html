@@ -10,12 +10,13 @@
 
     <body>
         <wicket:panel>
+
+            <h1 wicket:id="notLoggedIn"><wicket:message key="notLoggedIn" /></h1>
+
             <wicket:enclosure child="query">
                 <h1><wicket:message key="queryDescription"><q wicket:id="query" /></wicket:message></h1>
             </wicket:enclosure>
             <h1 wicket:id="noQuery"><wicket:message key="noQuery" /></h1>
-
-            <h1 wicket:id="notLoggedIn"><wicket:message key="notLoggedIn" /></h1>
 
             <dl>
                 <wicket:container wicket:id="profile">
@@ -53,6 +54,7 @@
                     </wicket:enclosure>
                 </div>
             </dl>
+
         </wicket:panel>
     </body>
 

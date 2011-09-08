@@ -1,23 +1,21 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import com.google.inject.Inject;
 import com.lyndir.lhunath.grantmywishes.data.*;
 import com.lyndir.lhunath.grantmywishes.model.service.UserService;
 import com.lyndir.lhunath.grantmywishes.model.service.WishService;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesSession;
 import com.lyndir.lhunath.opal.security.error.PermissionDeniedException;
+import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
-import com.lyndir.lhunath.opal.wayward.behavior.AjaxSubmitBehavior;
-import com.lyndir.lhunath.opal.wayward.behavior.AjaxUpdatingBehaviour;
+import com.lyndir.lhunath.opal.wayward.behavior.*;
 import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -46,17 +44,20 @@ public class SectionContentUser extends SectionContent {
     @Inject
     WishService wishService;
 
-    private String  query;
-    private boolean showProfile;
-    private boolean showWishes;
-    private boolean showWishLists;
+    String  query;
+    boolean showProfile;
+    boolean showWishes;
+    boolean showWishLists;
 
-    private Component wishLists;
+    Component wishLists;
+    boolean   newWishListForm;
 
     public SectionContentUser(final String id) {
 
         super( id );
-        select( true, true, true );
+
+        showProfile = true;
+        showWishLists = true;
     }
 
     @Override
@@ -64,100 +65,213 @@ public class SectionContentUser extends SectionContent {
 
         super.onInitialize();
 
-        add(
-                new Label(
-                        "query", new LoadableDetachableModel<String>() {
-                    @Override
-                    protected String load() {
+        add( new WebMarkupContainer( "notLoggedIn" ) {
+            @Override
+            protected void onConfigure() {
 
-                        return query;
+                super.onConfigure();
+
+                setVisible( GrantMyWishesSession.get().getUser() == null );
+            }
+        } );
+        add( new Label( "query", new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+
+                return query;
+            }
+        } ) {
+            @Override
+            protected void onConfigure() {
+
+                super.onConfigure();
+
+                setVisible( query != null && GrantMyWishesSession.get().getUser() != null );
+            }
+        } );
+        add( new WebMarkupContainer( "noQuery" ) {
+            @Override
+            protected void onConfigure() {
+
+                super.onConfigure();
+
+                setVisible( query == null && GrantMyWishesSession.get().getUser() != null );
+            }
+        } );
+
+        add( new WebMarkupContainer( "profile" ) {
+            Profile profile;
+            public ListView<ProfileItem> entry;
+
+            @Override
+            protected void onInitialize() {
+
+                super.onInitialize();
+
+                add( entry = new ListView<ProfileItem>( "entry", new LoadableDetachableModel<List<? extends ProfileItem>>() {
+                    @Override
+                    protected List<? extends ProfileItem> load() {
+
+                        try {
+                            Collection<ProfileItem> profileItemValues = (profile = userService.getProfile(
+                                    checkNotNull( GrantMyWishesSession.get().getUser() ) )).getProfileItems().values();
+
+                            return ImmutableList.copyOf( Collections2.filter( profileItemValues, new Predicate<ProfileItem>() {
+                                @Override
+                                public boolean apply(final ProfileItem input) {
+
+                                    return query == null || input.getType().getLocalizedInstance().contains( query ) || input.getValue()
+                                                                                                                             .contains(
+                                                                                                                                     query );
+                                }
+                            } ) );
+                        }
+                        catch (PermissionDeniedException e) {
+                            error( e.getLocalizedMessage() );
+                            return null;
+                        }
                     }
                 } ) {
                     @Override
-                    protected void onConfigure() {
+                    protected void populateItem(final ListItem<ProfileItem> profileItemListItem) {
 
-                        super.onConfigure();
+                        profileItemListItem.add(
+                                new Label( "label", profileItemListItem.getModelObject().getType().getLocalizedInstance() ) );
+                        profileItemListItem.add( new TextField<String>( "value", new IModel<String>() {
+                            @Override
+                            public String getObject() {
 
-                        setVisible( query != null && GrantMyWishesSession.get().getUser() != null );
+                                return profileItemListItem.getModelObject().getValue();
+                            }
+
+                            @Override
+                            public void setObject(final String object) {
+
+                                profileItemListItem.getModelObject().setValue( object );
+                            }
+
+                            @Override
+                            public void detach() {
+
+                                userService.save( profile );
+                            }
+                        } ).add( new AjaxUpdatingBehaviour() ) );
                     }
                 } );
-        add(
-                new WebMarkupContainer( "noQuery" ) {
+            }
+
+            @Override
+            protected void onConfigure() {
+
+                super.onConfigure();
+
+                setVisible( showProfile && GrantMyWishesSession.get().getUser() != null && !entry.getModelObject().isEmpty() );
+            }
+        } );
+        add( new WebMarkupContainer( "wishes" ) {
+            public ListView<Wish> entry;
+
+            @Override
+            protected void onInitialize() {
+
+                super.onInitialize();
+
+                add( entry = new ListView<Wish>( "entry", new LoadableDetachableModel<List<? extends Wish>>() {
                     @Override
-                    protected void onConfigure() {
+                    protected List<? extends Wish> load() {
 
-                        super.onConfigure();
+                        return ImmutableList.copyOf( wishService.getWishes( new Predicate<Wish>() {
+                            @Override
+                            public boolean apply(final Wish input) {
 
-                        setVisible( query == null && GrantMyWishesSession.get().getUser() != null );
+                                return query == null || input.getName().contains( query );
+                            }
+                        } ) );
+                    }
+                } ) {
+                    @Override
+                    protected void populateItem(final ListItem<Wish> wishListItem) {
+
+                        wishListItem.add( new Label( "label", wishListItem.getModelObject().getName() ) );
+                        wishListItem.add( new TextField<String>( "value", new LoadableDetachableModel<String>() {
+                            @Override
+                            protected String load() {
+
+                                return wishListItem.getModelObject().getDescription();
+                            }
+                        } ) );
                     }
                 } );
-        add(
-                new WebMarkupContainer( "notLoggedIn" ) {
+            }
+
+            @Override
+            protected void onConfigure() {
+
+                super.onConfigure();
+
+                setVisible( showWishes && !entry.getModelObject().isEmpty() );
+            }
+        } );
+        add( wishLists = new WebMarkupContainer( "wishLists" ) {
+            ListView<WishList> entry;
+
+            @Override
+            protected void onInitialize() {
+
+                super.onInitialize();
+
+                add( entry = new ListView<WishList>( "entry", new LoadableDetachableModel<List<? extends WishList>>() {
                     @Override
-                    protected void onConfigure() {
+                    protected List<? extends WishList> load() {
 
-                        super.onConfigure();
+                        SizedIterator<WishList> wishLists = userService.getWishLists(
+                                checkNotNull( GrantMyWishesSession.get().getUser() ) );
 
-                        setVisible( GrantMyWishesSession.get().getUser() == null );
+                        return ImmutableList.copyOf( Iterators.filter( wishLists, new Predicate<WishList>() {
+                            @Override
+                            public boolean apply(final WishList input) {
+
+                                return query == null || input.getName().contains( query );
+                            }
+                        } ) );
+                    }
+                } ) {
+                    @Override
+                    protected void populateItem(final ListItem<WishList> wishListListItem) {
+
+                        wishListListItem.add( new AjaxLink<Void>( "link" ) {
+
+                            @Override
+                            protected void onInitialize() {
+
+                                super.onInitialize();
+
+                                add( new Label( "label", wishListListItem.getModel() ) );
+                            }
+
+                            @Override
+                            public void onClick(final AjaxRequestTarget target) {
+
+                                try {
+                                    SectionNavigationController.get()
+                                                               .activateTabWithState( SectionInfo.WISHES,
+                                                                                      new SectionContentWishes.SectionStateWishes(
+                                                                                              wishListListItem.getModelObject() ) );
+                                }
+                                catch (IncompatibleStateException e) {
+                                    error( e );
+                                }
+                            }
+                        } );
                     }
                 } );
-
-        add(
-                new WebMarkupContainer( "profile" ) {
-                    Profile profile;
-                    public ListView<ProfileItem> entry;
+                add( new AjaxLink<Void>( "newWishList" ) {
 
                     @Override
-                    protected void onInitialize() {
+                    public void onClick(final AjaxRequestTarget target) {
 
-                        super.onInitialize();
-
-                        add(
-                                entry = new ListView<ProfileItem>(
-                                        "entry", new LoadableDetachableModel<List<? extends ProfileItem>>() {
-                                    @Override
-                                    protected List<? extends ProfileItem> load() {
-
-                                        try {
-                                            return ImmutableList.copyOf(
-                                                    (profile = userService.getProfile(
-                                                            checkNotNull( GrantMyWishesSession.get().getUser() ) )).getProfileItems() );
-                                        }
-                                        catch (PermissionDeniedException e) {
-                                            error( e.getLocalizedMessage() );
-                                            return null;
-                                        }
-                                    }
-                                } ) {
-                                    @Override
-                                    protected void populateItem(final ListItem<ProfileItem> profileItemListItem) {
-
-                                        profileItemListItem.add(
-                                                new Label(
-                                                        "label", profileItemListItem.getModelObject().getType().getLocalizedInstance() ) );
-                                        profileItemListItem.add(
-                                                new TextField<String>(
-                                                        "value", new IModel<String>() {
-                                                    @Override
-                                                    public String getObject() {
-
-                                                        return profileItemListItem.getModelObject().getValue();
-                                                    }
-
-                                                    @Override
-                                                    public void setObject(final String object) {
-
-                                                        profileItemListItem.getModelObject().setValue( object );
-                                                    }
-
-                                                    @Override
-                                                    public void detach() {
-
-                                                        userService.save( profile );
-                                                    }
-                                                } ).add( new AjaxUpdatingBehaviour() ) );
-                                    }
-                                } );
+                        newWishListForm = true;
+                        target.addComponent( wishLists );
                     }
 
                     @Override
@@ -165,182 +279,63 @@ public class SectionContentUser extends SectionContent {
 
                         super.onConfigure();
 
-                        setVisible( showProfile && GrantMyWishesSession.get().getUser() != null && !entry.getModelObject().isEmpty() );
+                        setVisible( !newWishListForm );
                     }
                 } );
-        add(
-                new WebMarkupContainer( "wishes" ) {
-                    public ListView<Wish> entry;
-
-                    @Override
-                    protected void onInitialize() {
-
-                        super.onInitialize();
-
-                        add(
-                                entry = new ListView<Wish>(
-                                        "entry", new LoadableDetachableModel<List<? extends Wish>>() {
-                                    @Override
-                                    protected List<? extends Wish> load() {
-
-                                        return ImmutableList.copyOf(
-                                                wishService.getWishes( Predicates.<Wish>alwaysTrue() ) );
-                                    }
-                                } ) {
-                                    @Override
-                                    protected void populateItem(final ListItem<Wish> wishListItem) {
-
-                                        wishListItem.add(
-                                                new Label(
-                                                        "label", wishListItem.getModelObject().getName() ) );
-                                        wishListItem.add(
-                                                new TextField<String>(
-                                                        "value", new LoadableDetachableModel<String>() {
-                                                    @Override
-                                                    protected String load() {
-
-                                                        return wishListItem.getModelObject().getDescription();
-                                                    }
-                                                } ) );
-                                    }
-                                } );
-                    }
+                final Model<String> newWishListName = Model.of();
+                add( new TextField<String>( "newWishList.name", newWishListName ) {
 
                     @Override
                     protected void onConfigure() {
 
                         super.onConfigure();
 
-                        setVisible( showWishes && !entry.getModelObject().isEmpty() );
+                        setVisible( newWishListForm );
                     }
-                } );
-        add(
-                wishLists = new WebMarkupContainer( "wishLists" ) {
-                    public ListView<WishList> entry;
-                    public boolean newWishListForm;
-
+                }.add( new AjaxSubmitBehavior() {
                     @Override
-                    protected void onInitialize() {
+                    protected void onUpdate(final AjaxRequestTarget target) {
 
-                        super.onInitialize();
+                        super.onUpdate( target );
 
-                        add(
-                                entry = new ListView<WishList>(
-                                        "entry", new LoadableDetachableModel<List<? extends WishList>>() {
-                                    @Override
-                                    protected List<? extends WishList> load() {
+                        try {
+                            userService.newWishList( newWishListName.getObject(),
+                                                     userService.getProfile( checkNotNull( GrantMyWishesSession.get().getUser() ) ) );
 
-                                        try {
-                                            return ImmutableList.copyOf(
-                                                    userService.getWishLists( checkNotNull( GrantMyWishesSession.get().getUser() ) ) );
-                                        }
-                                        catch (PermissionDeniedException e) {
-                                            error( e.getLocalizedMessage() );
-                                            return null;
-                                        }
-                                    }
-                                } ) {
-                                    @Override
-                                    protected void populateItem(final ListItem<WishList> wishListListItem) {
-
-                                        wishListListItem.add( new AjaxLink<Void>( "link" ) {
-
-                                            @Override
-                                            protected void onInitialize() {
-
-                                                super.onInitialize();
-
-                                                add( new Label( "label", wishListListItem.getModel() ) );
-                                            }
-
-                                            @Override
-                                            public void onClick(final AjaxRequestTarget target) {
-
-                                                try {
-                                                    SectionNavigationController.get()
-                                                                               .activateTabWithState(
-                                                                                       SectionInfo.WISHES,
-                                                                                       new SectionContentWishes.SectionStateWishes(
-                                                                                               wishListListItem.getModelObject() ) );
-                                                }
-                                                catch (IncompatibleStateException e) {
-                                                    error( e );
-                                                }
-                                            }
-                                        });
-                                    }
-                                } );
-                        add(
-                                new AjaxLink<Void>( "newWishList" ) {
-
-                                    @Override
-                                    public void onClick(final AjaxRequestTarget target) {
-
-                                        newWishListForm = true;
-                                        target.addComponent( wishLists );
-                                    }
-
-                                    @Override
-                                    protected void onConfigure() {
-
-                                        super.onConfigure();
-
-                                        setVisible( !newWishListForm );
-                                    }
-                                } );
-                        final Model<String> newWishListName = Model.of();
-                        add(
-                                new TextField<String>( "newWishList.name", newWishListName ) {
-
-                                    @Override
-                                    protected void onConfigure() {
-
-                                        super.onConfigure();
-
-                                        setVisible( newWishListForm );
-                                    }
-                                }.add(
-                                        new AjaxSubmitBehavior() {
-                                            @Override
-                                            protected void onUpdate(final AjaxRequestTarget target) {
-
-                                                super.onUpdate( target );
-
-                                                try {
-                                                    userService.newWishList(
-                                                            newWishListName.getObject(),
-                                                            userService.getProfile( GrantMyWishesSession.get().getUser() ) );
-
-                                                    newWishListForm = false;
-                                                    target.addComponent( wishLists );
-                                                }
-                                                catch (PermissionDeniedException e) {
-                                                    error( e );
-                                                }
-                                            }
-                                        } ) );
+                            newWishListForm = false;
+                            target.addComponent( wishLists );
+                        }
+                        catch (PermissionDeniedException e) {
+                            error( e );
+                        }
                     }
+                } ).add( new FocusOnReady() ) );
+            }
 
-                    @Override
-                    protected void onConfigure() {
+            @Override
+            protected void onConfigure() {
 
-                        super.onConfigure();
+                super.onConfigure();
 
-                        setVisible( showWishLists && GrantMyWishesSession.get().getUser() != null );
-                    }
-                }.setOutputMarkupPlaceholderTag( true ) );
+                setVisible( showWishLists && GrantMyWishesSession.get().getUser() != null );
+            }
+        }.setOutputMarkupPlaceholderTag( true ) );
     }
 
-    public void select(final boolean profile, final boolean wishes, final boolean wishLists) {
+    @Override
+    protected void onConfigure() {
 
-        showProfile = profile;
-        showWishes = wishes;
-        showWishLists = wishLists;
+        super.onConfigure();
 
-        SectionNavigationController.get().activateTab( SectionInfo.USER, this );
+        newWishListForm = false;
     }
 
     public static class SectionStateUser extends SectionState<SectionContentUser> {
+
+        protected SectionStateUser(final List<String> fragments) {
+
+            super( fragments );
+        }
 
         public SectionStateUser(final String fragment) {
 
@@ -352,6 +347,26 @@ public class SectionContentUser extends SectionContent {
             super( panel );
         }
 
+        public static SectionStateUser query(final String query) {
+
+            return new SectionStateUser( ImmutableList.<String>of( "profile", "wishes", "wishLists", "q", query ) );
+        }
+
+        public static SectionStateUser profile() {
+
+            return new SectionStateUser( ImmutableList.<String>of( "profile" ) );
+        }
+
+        public static SectionStateUser wishes() {
+
+            return new SectionStateUser( ImmutableList.<String>of( "wishes" ) );
+        }
+
+        public static SectionStateUser wishLists() {
+
+            return new SectionStateUser( ImmutableList.<String>of( "wishLists" ) );
+        }
+
         @Override
         protected List<String> loadFragments(final SectionContentUser panel) {
 
@@ -361,7 +376,7 @@ public class SectionContentUser extends SectionContent {
             if (panel.showWishes)
                 builder.add( "wishes" );
             if (panel.showWishLists)
-                builder.add( "wishlists" );
+                builder.add( "wishLists" );
             if (panel.query != null)
                 builder.add( "q" ).add( panel.query );
 
@@ -371,40 +386,25 @@ public class SectionContentUser extends SectionContent {
         @Override
         protected void applyFragments(final SectionContentUser panel, final Deque<String> fragments) {
 
-            panel.select( false, false, false );
+            panel.showProfile = false;
+            panel.showWishes = false;
+            panel.showWishLists = false;
+            panel.query = null;
 
-            FragmentSection section = FragmentSection.SHOW;
             while (!fragments.isEmpty()) {
                 String fragment = fragments.pop();
 
-                switch (section) {
-                    case SHOW:
-                        if (ObjectUtils.isEqual( "profile", fragment ))
-                            panel.showProfile = true;
-                        else if (ObjectUtils.isEqual( "wishes", fragment ))
-                            panel.showWishes = true;
-                        else if (ObjectUtils.isEqual( "wishlists", fragment ))
-                            panel.showWishLists = true;
-                        else if (ObjectUtils.isEqual( "q", fragment ))
-                            section = FragmentSection.QUERY;
-                        else
-                            throw logger.bug( "Unsupported %s fragment: %s", section, fragment );
-
-                        break;
-                    case QUERY:
-                        panel.query = fragment;
-                        section = FragmentSection.END;
-                        break;
-                    case END:
-                        throw logger.bug( "Not expecting any more fragments, but found: %s", fragment );
-                }
+                if ("profile".equalsIgnoreCase( fragment ))
+                    panel.showProfile = true;
+                else if ("wishes".equalsIgnoreCase( fragment ))
+                    panel.showWishes = true;
+                else if ("wishLists".equalsIgnoreCase( fragment ))
+                    panel.showWishLists = true;
+                else if ("q".equalsIgnoreCase( fragment ))
+                    panel.query = fragments.pop();
+                else
+                    throw logger.bug( "Unsupported fragment: %s", fragment );
             }
-        }
-
-        enum FragmentSection {
-            SHOW,
-            QUERY,
-            END
         }
     }
 

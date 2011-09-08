@@ -4,10 +4,11 @@
 
     <entry key="queryDescription">Results for ${query}</entry>
     <entry key="noQuery">Your stuff</entry>
-    <entry key="notLoggedIn">Log in to see your stuff</entry>
+    <entry key="notLoggedIn">Log in to manage your wishes</entry>
 
     <entry key="knownWishes">Known wishes</entry>
     <entry key="newWish">Create a new wish</entry>
     <entry key="wishList.name">Wish list: ${name}</entry>
+    <entry key="info.newWish">To create a new wish in your wish list, go to ${newWish} and search for what you wish to add.</entry>
 
 </properties>

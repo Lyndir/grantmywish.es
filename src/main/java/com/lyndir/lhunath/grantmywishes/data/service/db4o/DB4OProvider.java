@@ -7,9 +7,6 @@ import com.db4o.config.QueryEvaluationMode;
 import com.db4o.ta.TransparentPersistenceSupport;
 import com.google.inject.Provider;
 import com.lyndir.lhunath.grantmywishes.data.User;
-import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.LinkedList;
 
 
 /**
@@ -21,8 +18,6 @@ import java.util.LinkedList;
  */
 public class DB4OProvider implements Provider<ObjectContainer> {
 
-    final Collection<WeakReference<ObjectContainer>> containers = new LinkedList<WeakReference<ObjectContainer>>();
-
     @Override
     public ObjectContainer get() {
 
@@ -33,7 +28,6 @@ public class DB4OProvider implements Provider<ObjectContainer> {
         configuration.common().queries().evaluationMode( QueryEvaluationMode.LAZY );
         // TODO: Do this smarter; annotations or such.
         configuration.common().objectClass( User.class ).objectField( "name" ).indexed( true );
-        configuration.common().objectClass( User.class ).objectField( "email" ).indexed( true );
         // TODO: NQ optimization isn't working.  Fix it or convert to SODA style or find a way to do better SODA through annotations.
         //        configuration.common().diagnostic().addListener( new DiagnosticListener() {
         //
@@ -43,18 +37,6 @@ public class DB4OProvider implements Provider<ObjectContainer> {
         //            }
         //        } );
 
-        ObjectContainer db = Db4oEmbedded.openFile( configuration, "grantmywishes.db4o" );
-        containers.add(
-                new WeakReference<ObjectContainer>( db ) {
-
-                    @Override
-                    public void clear() {
-
-                        get().close();
-                        super.clear();
-                    }
-                } );
-
-        return db;
+        return Db4oEmbedded.openFile( configuration, "grantmywishes.db4o" );
     }
 }

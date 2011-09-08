@@ -10,6 +10,7 @@ import com.lyndir.lhunath.opal.system.i18n.*;
  */
 public enum ProfileItemType implements Localized {
 
+    EMAIL,
     GIVEN_NAME,
     FAMILY_NAME;
 

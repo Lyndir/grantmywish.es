@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.grantmywishes.webapp.listener;
 
+import com.db4o.ObjectContainer;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.inject.*;
@@ -25,6 +26,7 @@ import com.lyndir.lhunath.grantmywishes.model.ServiceModule;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesWebApplication;
 import com.lyndir.lhunath.opal.wayward.servlet.DisableURLSessionFilter;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import org.apache.wicket.Application;
 import org.apache.wicket.protocol.http.*;
 
@@ -72,6 +74,14 @@ public class GrantMyWishesGuiceContext extends GuiceServletContextListener {
                 bind( WicketFilter.class ).in( Scopes.SINGLETON );
             }
         } );
+    }
+
+    @Override
+    public void contextDestroyed(final ServletContextEvent servletContextEvent) {
+
+        get( servletContextEvent.getServletContext() ).getInstance( ObjectContainer.class ).close();
+
+        super.contextDestroyed( servletContextEvent );
     }
 
     /**

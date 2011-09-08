@@ -11,17 +11,17 @@
     <body>
         <wicket:panel>
             <h2>Looking for somebody or something?</h2>
-            <input type="text" placeholder="A person, event, wish list or wish" />
+            <input type="text" placeholder="A person, event, wish list or wish" wicket:id="query" />
 
             <menu class="misc">
                 <li>
-                    <a href="#">My friends</a>
+                    <a wicket:id="myFriends">My friends</a>
                 </li>
                 <li>
-                    <a href="#">Recent people</a>
+                    <a wicket:id="recentPeople">Recent people</a>
                 </li>
                 <li>
-                    <a href="#">Random love</a>
+                    <a wicket:id="randomPeople">Random love</a>
                 </li>
             </menu>
         </wicket:panel>

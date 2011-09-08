@@ -10,21 +10,74 @@
 
     <body>
         <wicket:panel>
-            <h1>Results for <q>maarten</q></h1>
-            <dl>
-                <dt>People</dt>
-                <dd>
-                    <img src="http://www.gravatar.com/avatar/224a463cdd728047bfc83a1504b98181" />
 
-                    <h3>
-                        <mark>Maarten</mark>
-                        Billemont
-                    </h3>
+            <wicket:enclosure child="query">
+                <h1><wicket:message key="queryDescription"><q wicket:id="query" /></wicket:message></h1>
+            </wicket:enclosure>
 
-                    <p>
-                        Maarten has <a href="#">3 wish lists</a> and <a href="#">34 unfulfilled wishes</a> in total. </p>
-                </dd>
-            </dl>
+            <wicket:enclosure child="people">
+                <dl>
+                    <dt>People</dt>
+                    <dd wicket:id="people">
+                        <img wicket:id="image" />
+
+                        <h3 wicket:id="name" />
+
+                        <p><wicket:message key="status">
+                            <wicket:container wicket:id="statusName" />
+                            <a wicket:id="wishLists" />
+                        </wicket:message></p>
+                    </dd>
+                </dl>
+            </wicket:enclosure>
+
+            <wicket:enclosure child="friends">
+                <dl>
+                    <dt>People</dt>
+                    <dd wicket:id="friends">
+                        <img wicket:id="image" />
+
+                        <h3 wicket:id="name" />
+
+                        <p><wicket:message key="status">
+                            <wicket:container wicket:id="statusName" />
+                            <a wicket:id="wishLists" />
+                        </wicket:message></p>
+                    </dd>
+                </dl>
+            </wicket:enclosure>
+
+            <wicket:enclosure child="recent">
+                <dl>
+                    <dt>People</dt>
+                    <dd wicket:id="recent">
+                        <img wicket:id="image" />
+
+                        <h3 wicket:id="name" />
+
+                        <p><wicket:message key="status">
+                            <wicket:container wicket:id="statusName" />
+                            <a wicket:id="wishLists" />
+                        </wicket:message></p>
+                    </dd>
+                </dl>
+            </wicket:enclosure>
+
+            <wicket:enclosure child="random">
+                <dl>
+                    <dt>People</dt>
+                    <dd wicket:id="random">
+                        <img wicket:id="image" />
+
+                        <h3 wicket:id="name" />
+
+                        <p><wicket:message key="status">
+                            <wicket:container wicket:id="statusName" />
+                            <a wicket:id="wishLists" />
+                        </wicket:message></p>
+                    </dd>
+                </dl>
+            </wicket:enclosure>
         </wicket:panel>
     </body>
 

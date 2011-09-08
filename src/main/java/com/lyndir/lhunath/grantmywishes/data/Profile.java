@@ -1,10 +1,10 @@
 package com.lyndir.lhunath.grantmywishes.data;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.lyndir.lhunath.grantmywishes.security.GGlobalSecureObject;
 import com.lyndir.lhunath.opal.security.*;
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
-import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -16,19 +16,24 @@ public class Profile extends AbstractSecureObject<User, GlobalSecureObject<User>
 
     static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
-    private final List<ProfileItem> profileItems = Lists.newArrayListWithExpectedSize( ProfileItemType.values().length );
+    private final Map<ProfileItemType, ProfileItem> profileItems = Maps.newTreeMap();
 
     public Profile(final User user) {
 
         super( user );
 
         for (final ProfileItemType profileItemType : ProfileItemType.values())
-            profileItems.add( new ProfileItem( profileItemType ) );
+            profileItems.put( profileItemType, new ProfileItem( profileItemType ) );
     }
 
-    public List<ProfileItem> getProfileItems() {
+    public Map<ProfileItemType, ProfileItem> getProfileItems() {
 
         return profileItems;
+    }
+
+    public String getProfileValue(final ProfileItemType profileItemType) {
+
+        return profileItems.get( profileItemType ).getValue();
     }
 
     @Override

@@ -4,6 +4,7 @@
 
     <entry key="type">Profile Entry</entry>
 
+    <entry key="instance.EMAIL">E-Mail Address</entry>
     <entry key="instance.GIVEN_NAME">Given Name</entry>
     <entry key="instance.FAMILY_NAME">Family Name</entry>
 

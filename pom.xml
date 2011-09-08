@@ -12,11 +12,11 @@
     </parent>
 
     <groupId>com.lyndir.lhunath.grantmywishes</groupId>
-    <artifactId>grantmywish.es</artifactId>
+    <artifactId>grantmywishes</artifactId>
     <version>GIT-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>grantmywish.es</name>
+    <name>grantmywishes</name>
     <url>http://www.grantmywish.es</url>
     <inceptionYear>2011</inceptionYear>
     <description>
@@ -31,9 +31,9 @@
 
     <!-- CODE MANAGEMENT -->
     <scm>
-        <url>${scm.github.webbase}/GrantMyWish.es</url>
-        <connection>${scm.github.pubbase}/GrantMyWish.es.git</connection>
-        <developerConnection>${scm.github.devbase}/GrantMyWish.es.git</developerConnection>
+        <url>${scm.github.webbase}/GrantMyWishes</url>
+        <connection>${scm.github.pubbase}/GrantMyWishes.git</connection>
+        <developerConnection>${scm.github.devbase}/GrantMyWishes.git</developerConnection>
     </scm>
     <issueManagement>
         <system>YouTrack</system>
@@ -124,6 +124,11 @@
         <dependency>
             <groupId>com.lyndir.lhunath.opal</groupId>
             <artifactId>opal-security</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-crypto</artifactId>
             <version>GIT-SNAPSHOT</version>
         </dependency>
 

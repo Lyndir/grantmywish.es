@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.webapp.page;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -12,7 +12,7 @@ import com.lyndir.lhunath.grantmywishes.model.service.UserService;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesSession;
 import com.lyndir.lhunath.grantmywishes.webapp.section.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.wayward.behavior.CSSClassAttributeAppender;
+import com.lyndir.lhunath.opal.wayward.behavior.*;
 import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.opal.wayward.navigation.NavigationPageListener;
 import java.util.Map;
@@ -21,7 +21,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -72,136 +71,121 @@ public class LayoutPage extends WebPage {
         //                                                .put( "pageView", getPageClass().getSimpleName() ).build() );
         //                            }
         //                        } ) );
-        add(
-                new WebMarkupContainer( "user" ) {
-                    boolean askUser;
+        add( new WebMarkupContainer( "user" ) {
+            boolean askUser;
+
+            @Override
+            protected void onInitialize() {
+
+                super.onInitialize();
+
+                final WebMarkupContainer userContainer = this;
+                add( new AjaxLink<Void>( "loggedOut" ) {
+                    @Override
+                    public void onClick(final AjaxRequestTarget target) {
+
+                        askUser = true;
+                        target.addComponent( userContainer );
+                    }
+
+                    @Override
+                    protected void onConfigure() {
+
+                        super.onConfigure();
+
+                        setVisible( GrantMyWishesSession.get().getUser() == null && !askUser );
+                    }
+                } );
+                add( new TextField<String>( "logIn", Model.<String>of() ) {
+
+                    @Override
+                    protected void onConfigure() {
+
+                        super.onConfigure();
+
+                        setVisible( GrantMyWishesSession.get().getUser() == null && askUser );
+                    }
+                }.add( new FocusOnReady(), new AjaxSubmitBehavior() {
+                    @Override
+                    protected void onUpdate(final AjaxRequestTarget target) {
+
+                        String identifier = getComponent().getDefaultModelObjectAsString();
+
+                        User user;
+                        try {
+                            user = userService.authenticate( identifier );
+                        }
+                        catch (NoSuchUserException ignored) {
+                            // TODO: Should be a separate process
+                            try {
+                                user = userService.newUser( identifier );
+                            }
+                            catch (UserNameUnavailableException ee) {
+                                error( ee.getLocalizedMessage() );
+                                return;
+                            }
+                        }
+
+                        GrantMyWishesSession.get().setUser( user );
+                        askUser = false;
+
+                        target.addComponent( getPage() );
+                    }
+                } ) );
+                add( new Link<Void>( "loggedIn" ) {
+                    @Override
+                    public void onClick() {
+
+                        GrantMyWishesSession.get().setUser( null );
+                    }
 
                     @Override
                     protected void onInitialize() {
 
                         super.onInitialize();
 
-                        final WebMarkupContainer userContainer = this;
-                        add(
-                                new AjaxLink<Void>( "loggedOut" ) {
-                                    @Override
-                                    public void onClick(final AjaxRequestTarget target) {
+                        add( new Label( "user", new LoadableDetachableModel<String>() {
+                            @Override
+                            protected String load() {
 
-                                        askUser = true;
-                                        target.addComponent( userContainer );
-                                    }
-
-                                    @Override
-                                    protected void onConfigure() {
-
-                                        super.onConfigure();
-
-                                        setVisible( GrantMyWishesSession.get().getUser() == null && !askUser );
-                                    }
-                                } );
-                        add(
-                                new Form<Void>( "logIn" ) {
-                                    public IModel<String> identifier = Model.of();
-
-                                    @Override
-                                    protected void onInitialize() {
-
-                                        super.onInitialize();
-
-                                        add( new TextField<String>( "identifier", identifier ) );
-                                    }
-
-                                    @Override
-                                    protected void onConfigure() {
-
-                                        super.onConfigure();
-
-                                        setVisible( GrantMyWishesSession.get().getUser() == null && askUser );
-                                    }
-
-                                    @Override
-                                    protected void onSubmit() {
-
-                                        User user;
-                                        try {
-                                            user = userService.authenticate( identifier.getObject() );
-                                        }
-                                        catch (NoSuchUserException ignored) {
-                                            // TODO: Should be a separate process
-                                            try {
-                                                user = userService.newUser( identifier.getObject() );
-                                            }
-                                            catch (UserNameUnavailableException ee) {
-                                                error( ee.getLocalizedMessage() );
-                                                return;
-                                            }
-                                        }
-
-                                        GrantMyWishesSession.get().setUser( user );
-                                        askUser = false;
-                                    }
-                                } );
-                        add(
-                                new Link<Void>(
-                                        "loggedIn" ) {
-                                    @Override
-                                    public void onClick() {
-
-                                        GrantMyWishesSession.get().setUser( null );
-                                    }
-
-                                    @Override
-                                    protected void onInitialize() {
-
-                                        super.onInitialize();
-
-                                        add(
-                                                new Label(
-                                                        "user", new LoadableDetachableModel<String>() {
-                                                    @Override
-                                                    protected String load() {
-
-                                                        return checkNotNull( GrantMyWishesSession.get().getUser() ).getName();
-                                                    }
-                                                } ) );
-                                    }
-
-                                    @Override
-                                    protected void onConfigure() {
-
-                                        super.onConfigure();
-
-                                        setVisible( GrantMyWishesSession.get().getUser() != null );
-                                    }
-                                } );
+                                return checkNotNull( GrantMyWishesSession.get().getUser() ).getName();
+                            }
+                        } ) );
                     }
-                }.setOutputMarkupId( true ) );
-        add(
-                new ListView<SectionInfo>( "navMenu", ImmutableList.copyOf( SectionInfo.values() ) ) {
+
                     @Override
-                    protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+                    protected void onConfigure() {
 
-                        final SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+                        super.onConfigure();
 
-                        sectionInfoListItem.add(
-                                new AjaxLink<Void>( "toolItem" ) {
-                                    @Override
-                                    public void onClick(final AjaxRequestTarget target) {
-
-                                        SectionNavigationController.get().activateNewTab( sectionInfo );
-                                    }
-                                }.add( new CSSClassAttributeAppender( sectionInfo.getToolItemSprite() ) ) );
-                        sectionInfoListItem.add( sectionTools.get( sectionInfoListItem.getModelObject() ) );
+                        setVisible( GrantMyWishesSession.get().getUser() != null );
                     }
                 } );
-        add(
-                new ListView<SectionInfo>( "sections", ImmutableList.copyOf( SectionInfo.values() ) ) {
-                    @Override
-                    protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+            }
+        }.setOutputMarkupId( true ) );
+        add( new ListView<SectionInfo>( "navMenu", ImmutableList.copyOf( SectionInfo.values() ) ) {
+            @Override
+            protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
 
-                        sectionInfoListItem.add( sectionContents.get( sectionInfoListItem.getModelObject() ) );
+                final SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+
+                sectionInfoListItem.add( new AjaxLink<Void>( "toolItem" ) {
+                    @Override
+                    public void onClick(final AjaxRequestTarget target) {
+
+                        SectionNavigationController.get().activateTab( sectionInfo, sectionContents.get( sectionInfo ) );
                     }
-                } );
+                }.add( new CSSClassAttributeAppender( sectionInfo.getToolItemSprite() ) ) );
+                sectionInfoListItem.add( sectionTools.get( sectionInfoListItem.getModelObject() ) );
+            }
+        } );
+        add( new ListView<SectionInfo>( "sections", ImmutableList.copyOf( SectionInfo.values() ) ) {
+            @Override
+            protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+
+                sectionInfoListItem.add( sectionContents.get( sectionInfoListItem.getModelObject() ) );
+            }
+        } );
     }
 
     @SuppressWarnings({ "unchecked" })

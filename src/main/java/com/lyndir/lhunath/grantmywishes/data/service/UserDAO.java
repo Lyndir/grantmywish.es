@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.grantmywishes.data.service;
 
+import com.google.common.base.Predicate;
 import com.lyndir.lhunath.grantmywishes.data.*;
 import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import org.jetbrains.annotations.NotNull;
@@ -30,4 +31,7 @@ public interface UserDAO {
 
     @NotNull
     SizedIterator<WishList> getWishLists(@NotNull User user);
+
+    @NotNull
+    SizedIterator<Profile> getProfiles(@NotNull Predicate<Profile> predicate);
 }

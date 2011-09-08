@@ -49,16 +49,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findUser(@Nullable final String identifier) {
 
-        ObjectSet<User> results = db.query(
-                new Predicate<User>() {
+        ObjectSet<User> results = db.query( new Predicate<User>() {
 
-                    @Override
-                    public boolean match(final User candidate) {
+            @Override
+            public boolean match(final User candidate) {
 
-                        return ObjectUtils.isEqual( candidate.getName(), identifier ) //
-                               || ObjectUtils.isEqual( candidate.getEmail(), identifier );
-                    }
-                } );
+                return ObjectUtils.isEqual( candidate.getName(), identifier );
+            }
+        } );
 
         return Iterables.getOnlyElement( results, null );
     }
@@ -66,16 +64,15 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public WishList findWishList(@NotNull final User owner, @NotNull final String name) {
 
-        ObjectSet<WishList> results = db.query(
-                new Predicate<WishList>() {
+        ObjectSet<WishList> results = db.query( new Predicate<WishList>() {
 
-                    @Override
-                    public boolean match(final WishList candidate) {
+            @Override
+            public boolean match(final WishList candidate) {
 
-                        return ObjectUtils.isEqual( candidate.getOwner(), owner ) //
-                               || ObjectUtils.isEqual( candidate.getName(), name );
-                    }
-                } );
+                return ObjectUtils.isEqual( candidate.getOwner(), owner ) //
+                       || ObjectUtils.isEqual( candidate.getName(), name );
+            }
+        } );
 
         return Iterables.getOnlyElement( results, null );
     }
@@ -84,15 +81,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public Profile getProfile(@NotNull final User user) {
 
-        ObjectSet<Profile> results = db.query(
-                new Predicate<Profile>() {
+        ObjectSet<Profile> results = db.query( new Predicate<Profile>() {
 
-                    @Override
-                    public boolean match(final Profile candidate) {
+            @Override
+            public boolean match(final Profile candidate) {
 
-                        return ObjectUtils.isEqual( user, candidate.getOwner() );
-                    }
-                } );
+                return ObjectUtils.isEqual( user, candidate.getOwner() );
+            }
+        } );
 
         return Iterables.getOnlyElement( results );
     }
@@ -101,15 +97,30 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public SizedIterator<WishList> getWishLists(@NotNull final User user) {
 
-        ObjectSet<WishList> results = db.query(
-                new Predicate<WishList>() {
+        ObjectSet<WishList> results = db.query( new Predicate<WishList>() {
 
-                    @Override
-                    public boolean match(final WishList candidate) {
+            @Override
+            public boolean match(final WishList candidate) {
 
-                        return ObjectUtils.isEqual( user, candidate.getOwner() );
-                    }
-                } );
+                return ObjectUtils.isEqual( user, candidate.getOwner() );
+            }
+        } );
+
+        return SizedIterator.of( results );
+    }
+
+    @NotNull
+    @Override
+    public SizedIterator<Profile> getProfiles(@NotNull final com.google.common.base.Predicate<Profile> predicate) {
+
+        ObjectSet<Profile> results = db.query( new Predicate<Profile>() {
+
+            @Override
+            public boolean match(final Profile candidate) {
+
+                return predicate.apply( candidate );
+            }
+        } );
 
         return SizedIterator.of( results );
     }

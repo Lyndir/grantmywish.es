@@ -14,6 +14,7 @@ import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.wayward.behavior.*;
+import com.lyndir.lhunath.opal.wayward.component.AjaxLabelLink;
 import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
 import java.util.*;
 import org.apache.wicket.Component;
@@ -239,15 +240,7 @@ public class SectionContentUser extends SectionContent {
                     @Override
                     protected void populateItem(final ListItem<WishList> wishListListItem) {
 
-                        wishListListItem.add( new AjaxLink<Void>( "link" ) {
-
-                            @Override
-                            protected void onInitialize() {
-
-                                super.onInitialize();
-
-                                add( new Label( "label", wishListListItem.getModel() ) );
-                            }
+                        wishListListItem.add( new AjaxLabelLink<WishList>( "link", wishListListItem.getModel() ) {
 
                             @Override
                             public void onClick(final AjaxRequestTarget target) {
@@ -255,8 +248,9 @@ public class SectionContentUser extends SectionContent {
                                 try {
                                     SectionNavigationController.get()
                                                                .activateTabWithState( SectionInfo.WISHES,
-                                                                                      new SectionContentWishes.SectionStateWishes(
-                                                                                              wishListListItem.getModelObject() ) );
+                                                                                      SectionContentWishes.SectionStateWishes
+                                                                                              .wishList(
+                                                                                                      wishListListItem.getModelObject() ) );
                                 }
                                 catch (IncompatibleStateException e) {
                                     error( e );
@@ -384,7 +378,8 @@ public class SectionContentUser extends SectionContent {
         }
 
         @Override
-        protected void applyFragments(final SectionContentUser panel, final Deque<String> fragments) {
+        protected void applyFragments(final SectionContentUser panel, final Deque<String> fragments)
+                throws IncompatibleStateException {
 
             panel.showProfile = false;
             panel.showWishes = false;
@@ -403,7 +398,7 @@ public class SectionContentUser extends SectionContent {
                 else if ("q".equalsIgnoreCase( fragment ))
                     panel.query = fragments.pop();
                 else
-                    throw logger.bug( "Unsupported fragment: %s", fragment );
+                    throw new IncompatibleStateException( "Unsupported fragment: %s", fragment );
             }
         }
     }

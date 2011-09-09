@@ -1,5 +1,7 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
+import static com.google.common.base.Preconditions.*;
+
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
@@ -9,10 +11,12 @@ import com.lyndir.lhunath.grantmywishes.model.service.WishService;
 import com.lyndir.lhunath.grantmywishes.webapp.GrantMyWishesSession;
 import com.lyndir.lhunath.opal.system.collection.SizedIterator;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
+import com.lyndir.lhunath.opal.wayward.component.AjaxLabelLink;
 import com.lyndir.lhunath.opal.wayward.navigation.IncompatibleStateException;
 import com.lyndir.lhunath.opal.wayward.provider.AbstractSizedIteratorProvider;
 import java.util.Deque;
 import java.util.List;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
@@ -41,6 +45,7 @@ public class SectionContentWishes extends SectionContent {
     String query;
 
     WishList wishList;
+    User     user;
 
     public SectionContentWishes(final String id) {
 
@@ -158,7 +163,7 @@ public class SectionContentWishes extends SectionContent {
 
                         setVisible( ObjectUtils.isEqual( GrantMyWishesSession.get().getUser(), wishList.getOwner() ) );
                     }
-                });
+                } );
             }
 
             @Override
@@ -169,14 +174,74 @@ public class SectionContentWishes extends SectionContent {
                 setVisible( wishList != null );
             }
         } );
+        add( new WebMarkupContainer( "user" ) {
+            @Override
+            protected void onInitialize() {
+
+                super.onInitialize();
+
+                add( new Label( "name", new LoadableDetachableModel<String>() {
+                    @Override
+                    protected String load() {
+
+                        return user.getName();
+                    }
+                } ) );
+                add( new DataView<WishList>( "items", new AbstractSizedIteratorProvider<WishList>() {
+                    @Override
+                    protected SizedIterator<WishList> load() {
+
+                        return userService.getWishLists( user );
+                    }
+                } ) {
+                    @Override
+                    protected void populateItem(final Item<WishList> wishListItem) {
+
+                        wishListItem.add( new AjaxLabelLink<WishList>( "name", wishListItem.getModel() ) {
+                            @Override
+                            public void onClick(final AjaxRequestTarget target) {
+
+                                try {
+                                    SectionNavigationController.get()
+                                                               .activateTabWithState( SectionInfo.WISHES,
+                                                                                      SectionContentWishes.SectionStateWishes
+                                                                                              .wishList( wishListItem.getModelObject() ) );
+                                }
+                                catch (IncompatibleStateException e) {
+                                    error( e );
+                                }
+                            }
+                        } );
+                    }
+                } );
+            }
+
+            @Override
+            protected void onConfigure() {
+
+                super.onConfigure();
+
+                setVisible( user != null && wishList == null );
+            }
+        } );
     }
 
-    void setWishList(final String ownerName, final String wishListName) {
+    void setUser(final String ownerName) {
 
-        wishList = userService.getWishList( userService.getUser( ownerName ), wishListName );
+        user = userService.getUser( ownerName );
+    }
+
+    void setWishList(final String wishListName) {
+
+        wishList = userService.getWishList( user, wishListName );
     }
 
     public static class SectionStateWishes extends SectionState<SectionContentWishes> {
+
+        protected SectionStateWishes(final List<String> fragments) {
+
+            super( fragments );
+        }
 
         public SectionStateWishes(final String fragment) {
 
@@ -188,18 +253,29 @@ public class SectionContentWishes extends SectionContent {
             super( panel );
         }
 
-        public SectionStateWishes(final WishList wishList) {
+        public static SectionStateWishes user(final User user) {
 
-            super( ImmutableList.of( "wishlist", wishList.getOwner().getName(), wishList.getName() ) );
+            return new SectionStateWishes( ImmutableList.of( "user", user.getName() ) );
+        }
+
+        public static SectionStateWishes wishList(final WishList wishList) {
+
+            return new SectionStateWishes( ImmutableList.of( "user", wishList.getOwner().getName(), "wishList", wishList.getName() ) );
         }
 
         @Override
         protected List<String> loadFragments(final SectionContentWishes panel) {
 
-            if (panel.wishList != null)
-                return ImmutableList.of( "wishlist", panel.wishList.getOwner().getName(), panel.wishList.getName() );
+            ImmutableList.Builder<String> builder = ImmutableList.builder();
+            if (panel.user != null)
+                builder.add( "user" ).add( panel.user.getName() );
+            if (panel.wishList != null) {
+                checkState( ObjectUtils.isEqual( panel.user, panel.wishList.getOwner() ),
+                            "Panel user doesn't equal panel wish list's owner." );
+                builder.add( "wishList" ).add( panel.wishList.getName() );
+            }
 
-            return ImmutableList.of();
+            return builder.build();
         }
 
         @Override
@@ -209,11 +285,16 @@ public class SectionContentWishes extends SectionContent {
             if (fragments.isEmpty())
                 return;
 
-            String type = fragments.pop();
-            if ("wishlist".equals( type ))
-                panel.setWishList( fragments.pop(), fragments.pop() );
-            else
-                throw new IncompatibleStateException();
+            while (!fragments.isEmpty()) {
+                String fragment = fragments.pop();
+
+                if ("user".equals( fragment ))
+                    panel.setUser( fragments.pop() );
+                else if ("wishList".equals( fragment ))
+                    panel.setWishList( fragments.pop() );
+                else
+                    throw new IncompatibleStateException();
+            }
         }
     }
 }

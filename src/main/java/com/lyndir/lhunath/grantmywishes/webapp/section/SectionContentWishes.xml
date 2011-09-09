@@ -10,5 +10,6 @@
     <entry key="newWish">Create a new wish</entry>
     <entry key="wishList.name">Wish list: ${name}</entry>
     <entry key="info.newWish">To create a new wish in your wish list, go to ${newWish} and search for what you wish to add.</entry>
+    <entry key="user.name">Wish lists of: ${name}</entry>
 
 </properties>

@@ -15,6 +15,8 @@
  */
 package com.lyndir.lhunath.grantmywishes.webapp.listener;
 
+import static com.lyndir.lhunath.opal.system.util.ObjectUtils.ifNotNull;
+
 import com.db4o.ObjectContainer;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
@@ -50,8 +52,7 @@ public class GrantMyWishesGuiceContext extends GuiceServletContextListener {
     @Override
     protected Injector getInjector() {
 
-        return Guice.createInjector(
-                Stage.DEVELOPMENT, new DAOModule(), new ServiceModule(), new ServletModule() {
+        return Guice.createInjector( Stage.DEVELOPMENT, new DAOModule(), new ServiceModule(), new ServletModule() {
 
             @Override
             protected void configureServlets() {
@@ -63,10 +64,9 @@ public class GrantMyWishesGuiceContext extends GuiceServletContextListener {
                 bind( DisableURLSessionFilter.class ).in( Scopes.SINGLETON );
 
                 // Wicket
-                paramBuilder = new ImmutableMap.Builder<String, String>();
+                paramBuilder = ImmutableMap.builder();
                 paramBuilder.put( WicketFilter.APP_FACT_PARAM, ContextParamWebApplicationFactory.class.getCanonicalName() );
-                paramBuilder.put(
-                        ContextParamWebApplicationFactory.APP_CLASS_PARAM, GrantMyWishesWebApplication.class.getCanonicalName() );
+                paramBuilder.put( ContextParamWebApplicationFactory.APP_CLASS_PARAM, GrantMyWishesWebApplication.class.getCanonicalName() );
                 paramBuilder.put( WicketFilter.FILTER_MAPPING_PARAM, PATH_WICKET );
                 paramBuilder.put( Application.CONFIGURATION, Application.DEVELOPMENT );
 
@@ -79,7 +79,7 @@ public class GrantMyWishesGuiceContext extends GuiceServletContextListener {
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
 
-        get( servletContextEvent.getServletContext() ).getInstance( ObjectContainer.class ).close();
+        ifNotNull( Injector.class, get( servletContextEvent.getServletContext() ) ).getInstance( ObjectContainer.class ).close();
 
         super.contextDestroyed( servletContextEvent );
     }

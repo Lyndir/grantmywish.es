@@ -7,9 +7,17 @@
     <entry key="notLoggedIn">Log in to manage your wishes</entry>
 
     <entry key="knownWishes">Known wishes</entry>
-    <entry key="newWish">Create a new wish</entry>
     <entry key="wishList.name">Wish list: ${name}</entry>
     <entry key="info.newWish">To create a new wish in your wish list, go to ${newWish} and search for what you wish to add.</entry>
     <entry key="user.name">Wish lists of: ${name}</entry>
+
+    <entry key="newWish">Create a new wish</entry>
+    <entry key="newWish.name">New wish</entry>
+    <entry key="newWish.name.placeholder">Enter the title of your new wish</entry>
+    <entry key="emptyEditableWishDescription">Describe this wish here.</entry>
+
+    <!-- Section Links -->
+    <entry key="addWishToList">Add this wish to a wish list</entry>
+    <entry key="addToWishListWindow.title">Select the wish list in which to add this wish</entry>
 
 </properties>

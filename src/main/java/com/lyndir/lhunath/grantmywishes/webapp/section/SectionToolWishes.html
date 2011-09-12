@@ -11,17 +11,17 @@
     <body>
         <wicket:panel>
             <h2>Wishing for something new?</h2>
-            <input type="text" placeholder="A product name or URL to a product page or image" />
+            <input type="text" placeholder="A product name or URL to a product page or image" wicket:id="query" />
 
             <menu class="misc">
                 <li>
-                    <a href="#">Friend wishes</a>
+                    <a wicket:id="friends">Friend wishes</a>
                 </li>
                 <li>
-                    <a href="#">Most wanted</a>
+                    <a wicket:id="hot">Most wanted</a>
                 </li>
                 <li>
-                    <a href="#">Recommendations</a>
+                    <a wicket:id="recommended">Recommendations</a>
                 </li>
             </menu>
         </wicket:panel>

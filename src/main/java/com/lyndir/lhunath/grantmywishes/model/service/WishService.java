@@ -14,7 +14,10 @@ import org.jetbrains.annotations.NotNull;
 public interface WishService {
 
     @NotNull
-    Wish newWish(@NotNull String name);
+    Wish update(@NotNull Wish wish);
 
     SizedIterator<Wish> getWishes(@NotNull Predicate<Wish> predicate);
+
+    @NotNull
+    Wish getWish(String wishName);
 }

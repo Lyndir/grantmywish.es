@@ -6,6 +6,7 @@ import com.lyndir.lhunath.grantmywishes.error.NoSuchUserException;
 import com.lyndir.lhunath.grantmywishes.error.UserNameUnavailableException;
 import com.lyndir.lhunath.opal.security.error.PermissionDeniedException;
 import com.lyndir.lhunath.opal.system.collection.SizedIterator;
+import com.lyndir.lhunath.opal.wayward.model.WicketInjected;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public interface UserService {
+public interface UserService extends WicketInjected {
 
     @NotNull
     User authenticate(@NotNull String userIdentifier)
@@ -41,4 +42,6 @@ public interface UserService {
     SizedIterator<WishList> getWishLists(@NotNull User user);
 
     void save(@NotNull Profile profile);
+
+    void save(@NotNull WishList wishList);
 }

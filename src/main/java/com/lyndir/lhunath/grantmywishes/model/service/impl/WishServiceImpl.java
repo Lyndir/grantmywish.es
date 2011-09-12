@@ -26,14 +26,21 @@ public class WishServiceImpl implements WishService {
 
     @NotNull
     @Override
-    public Wish newWish(@NotNull final String name) {
+    public Wish update(@NotNull final Wish wish) {
 
-        return wishDAO.update( new Wish( name ) );
+        return wishDAO.update( wish );
     }
 
     @Override
     public SizedIterator<Wish> getWishes(@NotNull final Predicate<Wish> predicate) {
 
         return wishDAO.getWishes( predicate );
+    }
+
+    @NotNull
+    @Override
+    public Wish getWish(final String wishName) {
+
+        return wishDAO.getWish( wishName );
     }
 }

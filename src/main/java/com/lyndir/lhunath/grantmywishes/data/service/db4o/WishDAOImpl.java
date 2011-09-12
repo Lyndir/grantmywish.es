@@ -3,10 +3,12 @@ package com.lyndir.lhunath.grantmywishes.data.service.db4o;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.lyndir.lhunath.grantmywishes.data.Wish;
 import com.lyndir.lhunath.grantmywishes.data.service.WishDAO;
 import com.lyndir.lhunath.opal.system.collection.SizedIterator;
+import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -38,16 +40,31 @@ public class WishDAOImpl implements WishDAO {
     @Override
     public SizedIterator<Wish> getWishes(@NotNull final com.google.common.base.Predicate<Wish> predicate) {
 
-        ObjectSet<Wish> results = db.query(
-                new Predicate<Wish>() {
+        ObjectSet<Wish> results = db.query( new Predicate<Wish>() {
 
-                    @Override
-                    public boolean match(final Wish candidate) {
+            @Override
+            public boolean match(final Wish candidate) {
 
-                        return predicate.apply( candidate );
-                    }
-                } );
+                return predicate.apply( candidate );
+            }
+        } );
 
         return SizedIterator.of( results );
+    }
+
+    @NotNull
+    @Override
+    public Wish getWish(final String wishName) {
+
+        ObjectSet<Wish> results = db.query( new Predicate<Wish>() {
+
+            @Override
+            public boolean match(final Wish candidate) {
+
+                return ObjectUtils.isEqual( candidate.getName(), wishName );
+            }
+        } );
+
+        return Iterables.getOnlyElement( results );
     }
 }

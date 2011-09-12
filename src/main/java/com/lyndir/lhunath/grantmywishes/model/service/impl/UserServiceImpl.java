@@ -99,4 +99,10 @@ public class UserServiceImpl implements UserService {
 
         userDAO.update( profile );
     }
+
+    @Override
+    public void save(@NotNull final WishList wishList) {
+
+        userDAO.update( wishList );
+    }
 }

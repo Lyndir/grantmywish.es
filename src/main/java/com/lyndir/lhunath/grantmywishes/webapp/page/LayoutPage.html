@@ -50,7 +50,11 @@
                 </menu>
             </nav>
         </header>
-        <div id="content" class="stripe">
+        <div id="content">
+            <div class="navigation message">
+                <div wicket:id="contentLinks" />
+            </div>
+            <div class="message" wicket:id="feedback" />
             <div class="inner">
                 <wicket:container wicket:id="sections">
                     <section wicket:id="contentPanel" />

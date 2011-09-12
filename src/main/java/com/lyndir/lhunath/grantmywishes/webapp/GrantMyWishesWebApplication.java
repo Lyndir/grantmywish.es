@@ -69,12 +69,13 @@ public class GrantMyWishesWebApplication extends WebApplication {
 
         return new IConverterLocator() {
             final ConverterLocator defaultConverter = new ConverterLocator();
+            private final LocalizedConverter localizedConverter = new LocalizedConverter();
 
             @Override
             public IConverter getConverter(final Class<?> type) {
 
                 if (Localized.class.isAssignableFrom( type ))
-                    return new LocalizedConverter();
+                    return localizedConverter;
 
                 return defaultConverter.getConverter( type );
             }

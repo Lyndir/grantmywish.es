@@ -19,13 +19,27 @@
 
             <dl wicket:id="wishes">
                 <dt><wicket:message key="knownWishes" /></dt>
-                <dd wicket:id="items">
-                    <img width="200" wicket:id="image" />
+                <wicket:container wicket:id="items">
+                    <dd wicket:id="link">
+                        <img width="200" wicket:id="image" />
 
-                    <h3 wicket:id="name" />
+                        <h3 wicket:id="name" />
 
-                    <wicket:container wicket:id="description" />
-                </dd>
+                        <wicket:container wicket:id="description" />
+                    </dd>
+                </wicket:container>
+                <wicket:enclosure child="newWish">
+                    <dd>
+                        <a wicket:id="newWish"><wicket:message key="newWish" /></a>
+                    </dd>
+                </wicket:enclosure>
+                <wicket:enclosure child="newWish.name">
+                    <dd>
+                        <label><wicket:message key="newWish.name" /></label>
+                        <input wicket:id="newWish.name" type="text" wicket:message="placeholder:newWish.name.placeholder" />
+                    </dd>
+                </wicket:enclosure>
+
             </dl>
 
             <dl wicket:id="wishList">
@@ -39,7 +53,8 @@
                 </dd>
                 <wicket:enclosure child="newWish">
                     <dd>
-                        <wicket:message key="info.newWish"> <span class="inline s28 people rocking-horse-sc44" wicket:id="newWish" />
+                        <wicket:message key="info.newWish">
+                            <span class="inline s28 people rocking-horse-sc44" wicket:id="newWish" />
                         </wicket:message>
                     </dd>
                 </wicket:enclosure>
@@ -51,6 +66,22 @@
                     <a wicket:id="name" />
                 </dd>
             </dl>
+
+            <div wicket:id="wish">
+                <h2 wicket:id="name" />
+
+                <img wicket:id="image" />
+
+                <p wicket:id="description" />
+            </div>
+
+            <div wicket:id="addToWishListWindow">
+                <h3><wicket:message key="addToWishListWindow.title" /></h3>
+                <label wicket:for="addToWishListWindow.list"><wicket:message key="addToWishListWindow.list" /></label>
+                <select wicket:id="addToWishListWindow.list">
+                    <option></option>
+                </select>
+            </div>
 
         </wicket:panel>
     </body>

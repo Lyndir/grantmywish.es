@@ -18,4 +18,7 @@ public interface WishDAO {
 
     @NotNull
     SizedIterator<Wish> getWishes(@NotNull Predicate<Wish> predicate);
+
+    @NotNull
+    Wish getWish(String wishName);
 }

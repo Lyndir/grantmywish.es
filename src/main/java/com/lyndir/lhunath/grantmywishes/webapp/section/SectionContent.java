@@ -1,5 +1,7 @@
 package com.lyndir.lhunath.grantmywishes.webapp.section;
 
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.apache.wicket.markup.html.panel.Panel;
 
 
@@ -13,5 +15,10 @@ public abstract class SectionContent extends Panel {
     SectionContent(final String id) {
 
         super( id );
+    }
+
+    public List<? extends SectionContentLink> getLinks() {
+
+        return ImmutableList.of();
     }
 }

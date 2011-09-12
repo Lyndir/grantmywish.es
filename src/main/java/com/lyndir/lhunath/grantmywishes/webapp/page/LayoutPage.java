@@ -1,6 +1,7 @@
 package com.lyndir.lhunath.grantmywishes.webapp.page;
 
 import static com.google.common.base.Preconditions.*;
+import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -15,6 +16,7 @@ import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.wayward.behavior.*;
 import com.lyndir.lhunath.opal.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.opal.wayward.navigation.NavigationPageListener;
+import java.util.List;
 import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -25,6 +27,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.*;
 
 
@@ -40,8 +43,8 @@ public class LayoutPage extends WebPage {
     static final Logger logger = Logger.get( LayoutPage.class );
 
     private final IModel<?>                        pageTitle       = Model.of( "grantmywish.es" );
-    private final Map<SectionInfo, SectionTool<?>> sectionTools    = Maps.newHashMapWithExpectedSize( SectionInfo.values().size() );
-    private final Map<SectionInfo, SectionContent> sectionContents = Maps.newHashMapWithExpectedSize( SectionInfo.values().size() );
+    private final Map<SectionInfo<?, ?>, SectionTool<?>> sectionTools    = Maps.newHashMapWithExpectedSize( SectionInfo.values().size() );
+    private final Map<SectionInfo<?, ?>, SectionContent> sectionContents = Maps.newHashMapWithExpectedSize( SectionInfo.values().size() );
 
     @Inject
     UserService userService;
@@ -54,12 +57,26 @@ public class LayoutPage extends WebPage {
         AjaxHooks.installAjaxEvents( this );
         AjaxHooks.installPageEvents( this, NavigationPageListener.of( SectionNavigationController.get() ) );
 
-        for (final SectionInfo sectionInfo : SectionInfo.values())
+        for (final SectionInfo<?, ?> sectionInfo : SectionInfo.values())
             sectionTools.put( sectionInfo, sectionInfo.getToolPanel( "toolPanel" ) );
-        for (final SectionInfo sectionInfo : SectionInfo.values())
+        for (final SectionInfo<?, ?> sectionInfo : SectionInfo.values())
             sectionContents.put( sectionInfo, sectionInfo.getContentPanel( "contentPanel" ) );
 
         add( new Label( "pageTitle", pageTitle ) );
+        add( new ListView<SectionContentLink>( "contentLinks", new LoadableDetachableModel<List<? extends SectionContentLink>>() {
+            @Override
+            protected List<? extends SectionContentLink> load() {
+
+                return ifNotNull( SectionContent.class,
+                                  sectionContents.get( SectionNavigationController.get().<SectionInfo<?, ?>>getActiveTab() ) ).getLinks();
+            }
+        } ) {
+            @Override
+            protected void populateItem(final ListItem<SectionContentLink> sectionContentLinkListItem) {
+
+            }
+        } );
+        add( new FeedbackPanel( "feedback" ) );
         //        add(
         //                new StringHeaderContributor(
         //                        new LoadableDetachableModel<String>() {
@@ -163,11 +180,11 @@ public class LayoutPage extends WebPage {
                 } );
             }
         }.setOutputMarkupId( true ) );
-        add( new ListView<SectionInfo>( "navMenu", ImmutableList.copyOf( SectionInfo.values() ) ) {
+        add( new ListView<SectionInfo<SectionContent, ?>>( "navMenu", ImmutableList.copyOf( SectionInfo.values() ) ) {
             @Override
-            protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+            protected void populateItem(final ListItem<SectionInfo<SectionContent, ?>> sectionInfoListItem) {
 
-                final SectionInfo sectionInfo = sectionInfoListItem.getModelObject();
+                final SectionInfo<SectionContent, ?> sectionInfo = sectionInfoListItem.getModelObject();
 
                 sectionInfoListItem.add( new AjaxLink<Void>( "toolItem" ) {
                     @Override
@@ -179,9 +196,9 @@ public class LayoutPage extends WebPage {
                 sectionInfoListItem.add( sectionTools.get( sectionInfoListItem.getModelObject() ) );
             }
         } );
-        add( new ListView<SectionInfo>( "sections", ImmutableList.copyOf( SectionInfo.values() ) ) {
+        add( new ListView<SectionInfo<?, ?>>( "sections", ImmutableList.copyOf( SectionInfo.values() ) ) {
             @Override
-            protected void populateItem(final ListItem<SectionInfo> sectionInfoListItem) {
+            protected void populateItem(final ListItem<SectionInfo<?, ?>> sectionInfoListItem) {
 
                 sectionInfoListItem.add( sectionContents.get( sectionInfoListItem.getModelObject() ) );
             }
@@ -191,7 +208,8 @@ public class LayoutPage extends WebPage {
     @SuppressWarnings({ "unchecked" })
     public <C extends SectionContent> C getContent(final SectionTool<C> sectionTool) {
 
-        for (final Map.Entry<SectionInfo, SectionTool<?>> sectionToolEntry : sectionTools.entrySet())
+        for (final Map.Entry<SectionInfo<?, ?>, SectionTool<?>> sectionToolEntry : sectionTools.entrySet())
+            //noinspection ObjectEquality
             if (sectionToolEntry.getValue() == sectionTool)
                 return (C) sectionContents.get( sectionToolEntry.getKey() );
 

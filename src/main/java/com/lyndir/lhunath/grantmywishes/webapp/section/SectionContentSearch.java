@@ -143,7 +143,21 @@ public class SectionContentSearch extends SectionContent {
                                                                                                .toLowerCase(), Charsets.UTF_8 ) ) ) ) );
                 profileItem.add( new Label( "name", profile.getOwner().getName() ) );
                 profileItem.add( new Label( "statusName", profile.getOwner().getName() ) );
-                profileItem.add( new Label( "wishLists", msgs.statusWishLists( userService.getWishLists( profile.getOwner() ).size() ) ) );
+                profileItem.add( new AjaxLabelLink<String>( "wishLists", msgs.statusWishLists(
+                        userService.getWishLists( profile.getOwner() ).size() ) ) {
+                    @Override
+                    public void onClick(final AjaxRequestTarget target) {
+
+                        try {
+                            SectionNavigationController.get()
+                                                       .activateTabWithState( SectionInfo.WISHES, SectionContentWishes.SectionStateWishes
+                                                               .user( profileItem.getModelObject().getOwner() ) );
+                        }
+                        catch (IncompatibleStateException e) {
+                            error( e );
+                        }
+                    }
+                } );
             }
 
             @Override
@@ -178,7 +192,21 @@ public class SectionContentSearch extends SectionContent {
                                                                                                .toLowerCase(), Charsets.UTF_8 ) ) ) ) );
                 profileItem.add( new Label( "name", profile.getOwner().getName() ) );
                 profileItem.add( new Label( "statusName", profile.getOwner().getName() ) );
-                profileItem.add( new Label( "wishLists", msgs.statusWishLists( userService.getWishLists( profile.getOwner() ).size() ) ) );
+                profileItem.add( new AjaxLabelLink<String>( "wishLists", msgs.statusWishLists(
+                        userService.getWishLists( profile.getOwner() ).size() ) ) {
+                    @Override
+                    public void onClick(final AjaxRequestTarget target) {
+
+                        try {
+                            SectionNavigationController.get()
+                                                       .activateTabWithState( SectionInfo.WISHES, SectionContentWishes.SectionStateWishes
+                                                               .user( profileItem.getModelObject().getOwner() ) );
+                        }
+                        catch (IncompatibleStateException e) {
+                            error( e );
+                        }
+                    }
+                } );
             }
 
             @Override
@@ -213,7 +241,21 @@ public class SectionContentSearch extends SectionContent {
                                                                                                .toLowerCase(), Charsets.UTF_8 ) ) ) ) );
                 profileItem.add( new Label( "name", profile.getOwner().getName() ) );
                 profileItem.add( new Label( "statusName", profile.getOwner().getName() ) );
-                profileItem.add( new Label( "wishLists", msgs.statusWishLists( userService.getWishLists( profile.getOwner() ).size() ) ) );
+                profileItem.add( new AjaxLabelLink<String>( "wishLists", msgs.statusWishLists(
+                        userService.getWishLists( profile.getOwner() ).size() ) ) {
+                    @Override
+                    public void onClick(final AjaxRequestTarget target) {
+
+                        try {
+                            SectionNavigationController.get()
+                                                       .activateTabWithState( SectionInfo.WISHES, SectionContentWishes.SectionStateWishes
+                                                               .user( profileItem.getModelObject().getOwner() ) );
+                        }
+                        catch (IncompatibleStateException e) {
+                            error( e );
+                        }
+                    }
+                } );
             }
 
             @Override

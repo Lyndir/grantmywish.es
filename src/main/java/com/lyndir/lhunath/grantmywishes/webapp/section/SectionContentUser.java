@@ -276,8 +276,7 @@ public class SectionContentUser extends SectionContent {
                         setVisible( !newWishListForm );
                     }
                 } );
-                final Model<String> newWishListName = Model.of();
-                add( new TextField<String>( "newWishList.name", newWishListName ) {
+                add( new TextField<String>( "newWishList.name" ) {
 
                     @Override
                     protected void onConfigure() {
@@ -293,7 +292,7 @@ public class SectionContentUser extends SectionContent {
                         super.onUpdate( target );
 
                         try {
-                            userService.newWishList( newWishListName.getObject(),
+                            userService.newWishList( getComponent().getDefaultModelObjectAsString(),
                                                      userService.getProfile( checkNotNull( GrantMyWishesSession.get().getUser() ) ) );
 
                             newWishListForm = false;
